@@ -1,0 +1,139 @@
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: loaderFadeOut 0.8s ease 2.8s forwards;
+}
+
+@keyframes loaderFadeOut {
+  to { opacity: 0; pointer-events: none; }
+}
+
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Rings */
+.loader-rings {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border-style: solid;
+  border-color: transparent;
+}
+
+.ring-1 {
+  width: 140px; height: 140px;
+  border-top-color: #C9A84C;
+  border-width: 2px;
+  animation: spin 1.6s linear infinite;
+}
+.ring-2 {
+  width: 110px; height: 110px;
+  border-right-color: #E8D48B;
+  border-width: 1.5px;
+  animation: spin 1.2s linear infinite reverse;
+}
+.ring-3 {
+  width: 80px; height: 80px;
+  border-bottom-color: #9A7B2F;
+  border-width: 1px;
+  animation: spin 2s linear infinite;
+}
+
+/* Logo inside rings */
+.loader-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: float 3s ease-in-out infinite;
+}
+
+.loader-main-logo {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 15px rgba(201, 168, 76, 0.6));
+  margin-bottom: 0.5rem;
+}
+
+.loader-brand {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--gold-primary);
+  text-transform: uppercase;
+}
+
+.loader-subbrand {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  color: var(--gold-light);
+  opacity: 0.8;
+  text-transform: uppercase;
+}
+
+/* Progress */
+.loader-progress-bar {
+  width: 200px;
+  height: 2px;
+  background: rgba(201, 168, 76, 0.15);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.loader-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #9A7B2F, #C9A84C, #F5D878);
+  border-radius: 1px;
+  transition: width 0.12s ease;
+  box-shadow: 0 0 8px rgba(201, 168, 76, 0.5);
+}
+
+.loader-progress-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: #C9A84C;
+}
+
+.loader-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: rgba(201, 168, 76, 0.5);
+  letter-spacing: 0.05em;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+  50% { transform: translate(-50%, -50%) translateY(-4px); }
+}
