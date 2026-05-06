@@ -1,24 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Heart, ShoppingBag, Eye } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import './ProductCard.css';
 
 export default function ProductCard({ product }) {
-  const [currentImg, setCurrentImg] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const { toggleWishlist, isWishlisted } = useWishlist();
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (product.images.length > 1) {
-        setCurrentImg(prev => (prev + 1) % product.images.length);
-      }
-    }, 3000); // Cycle every 3 seconds automatically
-    return () => clearInterval(interval);
-  }, [product.images.length]);
-
   return (
-    <div 
+    <Link 
+      to={`/product/${product.id}`}
       className="product-card"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -39,10 +31,9 @@ export default function ProductCard({ product }) {
         </div>
 
         <img 
-          src={product.images[currentImg]} 
+          src={product.images[0]} 
           alt={product.name} 
           className="product-image"
-          key={currentImg} /* Key helps with smooth transition */
         />
 
         <div className="product-actions-overlay">
@@ -70,6 +61,6 @@ export default function ProductCard({ product }) {
           <button className="similar-btn">Similar</button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

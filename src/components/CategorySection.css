@@ -1,10 +1,10 @@
 .category-section {
-  padding: 6rem 0 4rem;
+  padding: 4rem 0 3rem;
 }
 
 .category-header {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 }
 
 .category-grid {
@@ -27,73 +27,83 @@
   padding: 0.5rem;
 }
 
-.category-icon-box {
+.category-img-box {
   position: relative;
-  width: 60px;
-  height: 60px;
+  width: 90px;
+  height: 90px;
   background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--border-gold);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: var(--transition);
-}
-
-.cat-icon {
-  color: var(--text-muted);
+  /* Ensure no overflow clipping for the ring */
+  overflow: visible; 
   z-index: 2;
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.cat-icon svg {
-  width: 24px;
-  height: 24px;
-}
-
-.cat-ring {
+.category-ring {
   position: absolute;
-  top: -4px;
-  left: -4px;
-  right: -4px;
-  bottom: -4px;
-  border: 1px solid transparent;
+  inset: -12px; /* Increased space from -6px */
   border-radius: 50%;
+  border: 1px solid transparent;
+  opacity: 0;
+  transition: var(--transition);
+  z-index: -1;
+}
+
+.category-item.active .category-ring {
+  opacity: 1;
+  background: 
+    repeating-conic-gradient(
+      from 0deg,
+      var(--gold-primary) 0deg 2deg,
+      transparent 2deg 4deg
+    );
+  -webkit-mask-image: radial-gradient(circle, transparent 65%, black 66%);
+  mask-image: radial-gradient(circle, transparent 65%, black 66%);
+  animation: rotateRing 15s linear infinite;
+}
+
+@keyframes rotateRing {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.cat-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%; /* Ensure image is clipped to circle */
+  transition: transform 0.6s ease;
+}
+
+.cat-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(201, 168, 76, 0.2);
+  border-radius: 50%;
+  opacity: 0;
   transition: var(--transition);
   z-index: 1;
 }
 
-.category-item:hover .cat-ring,
-.category-item.active .cat-ring {
-  border: 1.5px dashed var(--gold-primary);
-  animation: rotateRing 10s linear infinite;
-}
-
-@keyframes rotateRing {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.category-item:hover .category-icon-box,
-.category-item.active .category-icon-box {
-  background: var(--gold-primary);
+.category-item:hover .category-img-box,
+.category-item.active .category-img-box {
   border-color: var(--gold-primary);
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(201, 168, 76, 0.3);
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(201, 168, 76, 0.2);
 }
 
-.category-item:hover .cat-icon,
-.category-item.active .cat-icon {
-  color: var(--bg-black);
-  transform: scale(1.1);
+.category-item:hover .cat-img,
+.category-item.active .cat-img {
+  transform: scale(1.15);
+}
+
+.category-item:hover .cat-overlay,
+.category-item.active .cat-overlay {
+  opacity: 1;
 }
 
 .cat-label {

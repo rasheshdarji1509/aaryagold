@@ -15,18 +15,18 @@ import {
 import './CategorySection.css';
 
 const categories = [
-  { id: 'all', label: 'All', icon: <LayoutGrid size={24} /> },
-  { id: 'rings', label: 'Rings', icon: <CircleDot size={24} /> },
-  { id: 'necklaces', label: 'Necklaces', icon: <Box size={24} /> },
-  { id: 'earrings', label: 'Earrings', icon: <Sparkles size={24} /> },
-  { id: 'bracelets', label: 'Bracelets', icon: <Watch size={24} /> },
-  { id: 'bangles', label: 'Bangles', icon: <CircleDot size={24} /> },
-  { id: 'pendants', label: 'Pendants', icon: <Gem size={24} /> },
-  { id: 'chains', label: 'Chains', icon: <Hammer size={24} /> },
-  { id: 'sets', label: 'Bridal Sets', icon: <Crown size={24} /> },
-  { id: 'her', label: 'For Her', icon: <Heart size={24} /> },
-  { id: 'him', label: 'For Him', icon: <User size={24} /> },
-  { id: 'diamond', label: 'Diamond', icon: <Gem size={24} /> },
+  { id: 'all', label: 'All', img: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&q=80' },
+  { id: 'rings', label: 'Rings', img: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&q=80' },
+  { id: 'necklaces', label: 'Necklaces', img: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&q=80' },
+  { id: 'earrings', label: 'Earrings', img: 'https://images.unsplash.com/photo-1603974372039-adc49044b6bd?w=400&q=80' },
+  { id: 'bracelets', label: 'Bracelets', img: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=400&q=80' },
+  { id: 'bangles', label: 'Bangles', img: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&q=80' },
+  { id: 'pendants', label: 'Pendants', img: 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=400&q=80' },
+  { id: 'chains', label: 'Chains', img: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&q=80' },
+  { id: 'sets', label: 'Bridal Sets', img: 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=400&q=80' },
+  { id: 'her', label: 'For Her', img: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&q=80' },
+  { id: 'him', label: 'For Him', img: 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=400&q=80' },
+  { id: 'diamond', label: 'Diamond', img: 'https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=400&q=80' },
 ];
 
 export default function CategorySection({ activeCategory, onCategoryChange }) {
@@ -45,9 +45,10 @@ export default function CategorySection({ activeCategory, onCategoryChange }) {
               className={`category-item ${activeCategory === cat.id ? 'active' : ''}`}
               onClick={() => onCategoryChange(cat.id)}
             >
-              <div className="category-icon-box">
-                <div className="cat-icon">{cat.icon}</div>
-                <div className="cat-ring"></div>
+              <div className="category-img-box">
+                <div className="category-ring"></div>
+                <img src={cat.img} alt={cat.label} className="cat-img" />
+                <div className="cat-overlay"></div>
               </div>
               <span className="cat-label">{cat.label}</span>
             </button>

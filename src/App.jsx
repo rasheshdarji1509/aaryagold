@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Loader from './components/Loader';
 import Home from './pages/Home';
 import Products from './pages/Products';
+import ProductDetail from './pages/ProductDetail';
 import Wishlist from './pages/Wishlist';
 import About from './pages/About';
 import Contact from './pages/Contact';
@@ -27,7 +28,7 @@ function App() {
     // Simulate initial asset loading
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 3500); // Loader duration
+    }, 2000); // Loader duration
     return () => clearTimeout(timer);
   }, []);
 
@@ -44,6 +45,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />

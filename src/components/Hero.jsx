@@ -11,7 +11,8 @@ const slides = [
     subtitle: 'Discover timeless jewellery from the heart of Kalbadevi, Mumbai — where tradition meets contemporary elegance.',
     cta: 'Explore Collection',
     ctaLink: '/products',
-    img: 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=1400&q=85',
+    img: 'https://images.pexels.com/photos/1458867/pexels-photo-1458867.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    objectPosition: '20% center',
     accent: 'Premium Gold Jewellery Wholesaler',
   },
   {
@@ -21,7 +22,8 @@ const slides = [
     subtitle: 'Make every wedding moment unforgettable with our exquisite bridal sets — crafted for the queen in you.',
     cta: 'View Bridal Sets',
     ctaLink: '/products?category=sets',
-    img: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1400&q=85',
+    img: 'https://images.pexels.com/photos/248077/pexels-photo-248077.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    objectPosition: '30% center',
     accent: 'Exclusive Bridal & Festive Wear',
   },
   {
@@ -31,7 +33,8 @@ const slides = [
     subtitle: 'From solitaire rings to eternity bands — our certified diamond collection sparkles with brilliance.',
     cta: 'Shop Diamonds',
     ctaLink: '/products?category=diamond',
-    img: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1400&q=85',
+    img: '/images/hero3.png',
+    objectPosition: 'left center',
     accent: 'Certified Diamond Jewellery',
   },
 ];
@@ -63,7 +66,11 @@ export default function Hero() {
     <section className="hero">
       {/* Background Image */}
       <div className={`hero-bg ${animating ? 'fade-out' : 'fade-in'}`}>
-        <img src={slide.img} alt={slide.title} />
+        <img 
+          src={slide.img} 
+          alt={slide.title} 
+          style={{ objectPosition: slide.objectPosition || 'center' }}
+        />
         <div className="hero-overlay"></div>
       </div>
 

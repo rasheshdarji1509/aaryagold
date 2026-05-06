@@ -167,7 +167,6 @@ export default function Navbar({ onSearch }) {
                       <img src={p.images[0]} alt={p.name} />
                       <div>
                         <span className="sug-name">{p.name}</span>
-                        <span className="sug-price">{p.price}</span>
                       </div>
                     </Link>
                   </li>

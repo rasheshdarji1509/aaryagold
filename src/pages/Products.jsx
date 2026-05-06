@@ -35,7 +35,7 @@ export default function Products() {
   return (
     <div className="products-page" style={{ paddingTop: '5rem' }}>
       <div className="container">
-        <div className="page-header" style={{ marginBottom: '4rem' }}>
+        <div className="page-header" style={{ marginBottom: '2.5rem' }}>
           <span className="section-label">Explore</span>
           <h1 className="section-title">The <span className="gold-text">Collection</span></h1>
         </div>
@@ -45,7 +45,7 @@ export default function Products() {
           flexWrap: 'wrap', 
           gap: '2rem', 
           alignItems: 'center', 
-          marginBottom: '3rem',
+          marginBottom: '1.5rem',
           padding: '1.5rem',
           background: 'var(--bg-card)',
           border: '1px solid var(--border-subtle)',
