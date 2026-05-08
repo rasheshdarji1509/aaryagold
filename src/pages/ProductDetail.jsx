@@ -10,13 +10,37 @@ export default function ProductDetail() {
   const { toggleWishlist, isWishlisted } = useWishlist();
   const [product, setProduct] = useState(null);
   const [activeImg, setActiveImg] = useState(0);
+  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedSize, setSelectedSize] = useState('');
+  const [selectedDiamondQuality, setSelectedDiamondQuality] = useState('');
+  const [openSection, setOpenSection] = useState('specs');
+  const [currentImages, setCurrentImages] = useState([]);
 
   useEffect(() => {
     const foundProduct = products.find(p => p.id === parseInt(id));
     if (foundProduct) {
       setProduct(foundProduct);
+      const defaultColor = foundProduct.colors && foundProduct.colors.length > 0 ? foundProduct.colors[0] : '';
+      setSelectedColor(defaultColor);
+      if (foundProduct.sizes && foundProduct.sizes.length > 0) setSelectedSize(foundProduct.sizes[0]);
+      if (foundProduct.diamondQualities && foundProduct.diamondQualities.length > 0) setSelectedDiamondQuality(foundProduct.diamondQualities[0]);
+      
+      // Initial images
+      if (foundProduct.colorImages && foundProduct.colorImages[defaultColor]) {
+        setCurrentImages(foundProduct.colorImages[defaultColor]);
+      } else {
+        setCurrentImages(foundProduct.images);
+      }
     }
   }, [id]);
+
+  const handleColorChange = (color) => {
+    setSelectedColor(color);
+    if (product.colorImages && product.colorImages[color]) {
+      setCurrentImages(product.colorImages[color]);
+      setActiveImg(0); // Reset to first image of new color
+    }
+  };
 
   if (!product) {
     return (
@@ -27,7 +51,17 @@ export default function ProductDetail() {
     );
   }
 
-  const whatsappMsg = `Hi Aarya Gold, I'm interested in the ${product.name} (Weight: ${product.weight}, Purity: ${product.purity}). Can you provide more details?`;
+  const whatsappMsg = `Hi Aarya Gold, I'm interested in the ${product.name}.
+Details:
+- SKU: ${product.details?.sku}
+- Weight: ${product.weight}
+- Purity: ${product.purity}
+- Color: ${selectedColor}
+- Size: ${selectedSize}
+- Quality: ${product.qualityGrade}
+- Diamond Quality: ${selectedDiamondQuality}
+
+Can you provide more details or pricing?`;
 
   return (
     <div className="product-detail-page">
@@ -45,7 +79,8 @@ export default function ProductDetail() {
           <div className="product-gallery">
             <div className="main-image-container">
               {product.badge && <span className="detail-badge">{product.badge}</span>}
-              <img src={product.images[activeImg]} alt={product.name} className="main-image" />
+              <div className="current-color-tag">{selectedColor} Edition</div>
+              <img src={currentImages[activeImg]} alt={product.name} className="main-image" />
               <button 
                 className={`detail-wishlist-btn ${isWishlisted(product.id) ? 'active' : ''}`}
                 onClick={() => toggleWishlist(product)}
@@ -54,13 +89,14 @@ export default function ProductDetail() {
               </button>
             </div>
             <div className="thumbnail-grid">
-              {product.images.map((img, i) => (
+              {currentImages.map((img, i) => (
                 <div 
                   key={i} 
                   className={`thumb-box ${i === activeImg ? 'active' : ''}`}
                   onClick={() => setActiveImg(i)}
                 >
-                  <img src={img} alt={`${product.name} ${i + 1}`} />
+                  <img src={img} alt={`${product.name} ${selectedColor} View ${i + 1}`} />
+                  <span className="view-label">View {i + 1}</span>
                 </div>
               ))}
             </div>
@@ -73,6 +109,7 @@ export default function ProductDetail() {
                 {product.category.map(cat => (
                   <span key={cat} className="detail-cat-tag">{cat}</span>
                 ))}
+                <span className="quality-badge">{product.qualityGrade}</span>
               </div>
               <h1 className="detail-title">{product.name}</h1>
               <div className="detail-rating">
@@ -83,24 +120,134 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            <div className="specs-grid">
-              <div className="spec-item">
-                <span className="spec-label">Weight</span>
-                <span className="spec-val">{product.weight}</span>
-              </div>
-              <div className="spec-item">
-                <span className="spec-label">Purity</span>
-                <span className="spec-val">{product.purity}</span>
-              </div>
-              <div className="spec-item">
-                <span className="spec-label">Material</span>
-                <span className="spec-val">Pure Gold</span>
-              </div>
+            <div className="product-story">
+              <h3>The Story</h3>
+              <p>{product.fullDescription || product.description}</p>
             </div>
 
-            <div className="detail-description">
-              <h3>Overview</h3>
-              <p>{product.description}</p>
+            {/* Diamond Quality Selection */}
+            {product.diamondQualities && (
+              <div className="selector-section">
+                <h3 className="selector-title">Diamond Quality :</h3>
+                <div className="diamond-quality-options">
+                  {product.diamondQualities.map(dq => (
+                    <button 
+                      key={dq}
+                      className={`dq-btn ${selectedDiamondQuality === dq ? 'active' : ''}`}
+                      onClick={() => setSelectedDiamondQuality(dq)}
+                    >
+                      {dq}
+                    </button>
+                  ))}
+                </div>
+                <p className="dq-helper">All diamonds are crafted in VVS VS clarity with FG color.</p>
+              </div>
+            )}
+
+            {/* Color Selection */}
+            {product.colors && (
+              <div className="selector-section">
+                <h3 className="selector-title">Metal Color : <span className="selected-val-text">{selectedColor}</span></h3>
+                <div className="color-options">
+                  {product.colors.map(color => (
+                    <button 
+                      key={color}
+                      className={`color-btn ${selectedColor === color ? 'active' : ''} color-${color.toLowerCase().replace(' ', '-')}`}
+                      onClick={() => handleColorChange(color)}
+                      title={color}
+                    >
+                      <span className="color-swatch"></span>
+                      <span className="color-name">{color}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Size Selection */}
+            {product.sizes && (
+              <div className="selector-section">
+                <div className="selector-header">
+                  <h3 className="selector-title">Ring Size : <span className="selected-val-text">{selectedSize}</span></h3>
+                  <button className="size-guide-btn">Find Ring Size</button>
+                </div>
+                <div className="size-options">
+                  <select 
+                    className="size-select-input"
+                    value={selectedSize}
+                    onChange={(e) => setSelectedSize(e.target.value)}
+                  >
+                    <option value="">Select Size</option>
+                    {product.sizes.map(size => (
+                      <option key={size} value={size}>{size}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            )}
+
+            {/* Accordion Sections */}
+            <div className="product-accordions">
+              <div className={`accordion-item ${openSection === 'specs' ? 'open' : ''}`}>
+                <button className="accordion-trigger" onClick={() => setOpenSection(openSection === 'specs' ? '' : 'specs')}>
+                  <span>Product Details</span>
+                  <ArrowLeft size={16} style={{ transform: openSection === 'specs' ? 'rotate(-90deg)' : 'rotate(0deg)', transition: '0.3s' }} />
+                </button>
+                <div className="accordion-content">
+                  <table className="specs-table">
+                    <tbody>
+                      <tr>
+                        <td>SKU</td>
+                        <td>{product.details?.sku}</td>
+                      </tr>
+                      <tr>
+                        <td>Metal Stamp</td>
+                        <td>{product.details?.metalStamp}</td>
+                      </tr>
+                      <tr>
+                        <td>Category</td>
+                        <td>{product.category[0].toUpperCase()}</td>
+                      </tr>
+                      <tr>
+                        <td>Gold Weight ( Approx ) <Share2 size={12} /></td>
+                        <td>{product.details?.goldWeight}</td>
+                      </tr>
+                      <tr>
+                        <td>Total Diamond Carat Weight</td>
+                        <td>{product.details?.diamondCarat}</td>
+                      </tr>
+                      <tr>
+                        <td>Height <Share2 size={12} /></td>
+                        <td>{product.details?.height}</td>
+                      </tr>
+                      <tr>
+                        <td>Width <Share2 size={12} /></td>
+                        <td>{product.details?.width}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className={`accordion-item ${openSection === 'diamond' ? 'open' : ''}`}>
+                <button className="accordion-trigger" onClick={() => setOpenSection(openSection === 'diamond' ? '' : 'diamond')}>
+                  <span>Side Diamond Details</span>
+                  <ArrowLeft size={16} style={{ transform: openSection === 'diamond' ? 'rotate(-90deg)' : 'rotate(0deg)', transition: '0.3s' }} />
+                </button>
+                <div className="accordion-content">
+                  <p>Detailed information about secondary diamonds used in this piece.</p>
+                </div>
+              </div>
+
+              <div className={`accordion-item ${openSection === 'price' ? 'open' : ''}`}>
+                <button className="accordion-trigger" onClick={() => setOpenSection(openSection === 'price' ? '' : 'price')}>
+                  <span>Price Breakup</span>
+                  <ArrowLeft size={16} style={{ transform: openSection === 'price' ? 'rotate(-90deg)' : 'rotate(0deg)', transition: '0.3s' }} />
+                </button>
+                <div className="accordion-content">
+                  <p>Transparent breakdown of gold, diamond, and making charges.</p>
+                </div>
+              </div>
             </div>
 
             <div className="detail-actions">
@@ -110,13 +257,11 @@ export default function ProductDetail() {
                 target="_blank"
                 rel="noreferrer"
               >
+                <ShoppingBag size={20} />
                 <span>Inquire on WhatsApp</span>
               </a>
-              <button className="btn-outline-large" onClick={() => toggleWishlist(product)}>
-                <Heart size={18} />
-                <span>{isWishlisted(product.id) ? 'Saved to Wishlist' : 'Add to Wishlist'}</span>
-              </button>
             </div>
+
 
             <div className="trust-badges">
               <div className="trust-item">

@@ -30,11 +30,21 @@ export default function ProductCard({ product }) {
           </button>
         </div>
 
-        <img 
-          src={product.images[0]} 
-          alt={product.name} 
-          className="product-image"
-        />
+        {/* Dual Image Preview */}
+        <div className="image-stack">
+          <img 
+            src={product.images && product.images.length > 0 ? product.images[0] : '/assets/products/ring1.png'} 
+            alt={product.name} 
+            className={`product-image primary-img ${isHovered && product.images && product.images.length > 1 ? 'hidden' : ''}`}
+          />
+          {product.images && product.images.length > 1 && (
+            <img 
+              src={product.images[1]} 
+              alt={`${product.name} View 2`} 
+              className={`product-image secondary-img ${isHovered ? 'visible' : ''}`}
+            />
+          )}
+        </div>
 
         <div className="product-actions-overlay">
           <button className="action-btn" title="Quick View">
