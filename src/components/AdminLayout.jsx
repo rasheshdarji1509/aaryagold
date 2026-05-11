@@ -53,8 +53,8 @@ export default function AdminLayout() {
             <Link to="/admin/products" style={itemStyle('/admin/products')}>
               Products
             </Link>
-            <Link to="/admin/products/add" style={itemStyle('/admin/products/add')}>
-              Add Products
+            <Link to="/admin/categories" style={itemStyle('/admin/categories')}>
+              Categories (Manage)
             </Link>
           </nav>
           <button

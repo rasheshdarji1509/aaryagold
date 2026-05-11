@@ -13,6 +13,8 @@ import Contact from './pages/Contact';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminProducts from './pages/AdminProducts';
+import AdminCategories from './pages/AdminCategories';
+import { CategoryProvider } from './context/CategoryContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { ProductProvider } from './context/ProductContext';
@@ -61,6 +63,7 @@ function AppShell() {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
           <Route path="products/add" element={<AdminProducts />} />
+          <Route path="categories" element={<AdminCategories />} />
         </Route>
       </Routes>
       {!hidePublicLayout && <Footer />}
@@ -84,35 +87,37 @@ function App() {
       <AdminAuthProvider>
         <ToastProvider>
           <ProductProvider>
-            <WishlistProvider>
-              <Router>
-        {loading && <Loader />}
-        
-        <div className={`app-content ${loading ? 'hidden' : 'visible'}`}>
-          <ScrollToTop />
-          <AppShell />
-        </div>
+            <CategoryProvider>
+              <WishlistProvider>
+                <Router>
+                  {loading && <Loader />}
+                  
+                  <div className={`app-content ${loading ? 'hidden' : 'visible'}`}>
+                    <ScrollToTop />
+                    <AppShell />
+                  </div>
 
-        {/* Global styles for hidden/visible transition */}
-        <style>{`
-          .app-content {
-            transition: opacity 0.8s ease;
-          }
-          .app-content.hidden {
-            opacity: 0;
-            height: 100vh;
-            overflow: hidden;
-          }
-          .app-content.visible {
-            opacity: 1;
-          }
-        `}</style>
-              </Router>
-            </WishlistProvider>
+                  {/* Global styles for hidden/visible transition */}
+                  <style>{`
+                    .app-content {
+                      transition: opacity 0.8s ease;
+                    }
+                    .app-content.hidden {
+                      opacity: 0;
+                      height: 100vh;
+                      overflow: hidden;
+                    }
+                    .app-content.visible {
+                      opacity: 1;
+                    }
+                  `}</style>
+                </Router>
+              </WishlistProvider>
+            </CategoryProvider>
           </ProductProvider>
         </ToastProvider>
       </AdminAuthProvider>
-  </ThemeProvider>
+    </ThemeProvider>
   );
 }
 

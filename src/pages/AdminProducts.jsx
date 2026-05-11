@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useProducts } from '../context/ProductContext';
 import { useToast } from '../context/ToastContext';
+import { useCategories } from '../context/CategoryContext';
 
 const PAGE_SIZE = 8;
 
@@ -11,7 +12,7 @@ const emptyForm = {
   weight: '',
   purity: '',
   badge: '',
-  categoryCsv: '',
+  category: '',
   colorsCsv: '',
   tagsCsv: '',
   imageCsv: '',
@@ -27,7 +28,6 @@ const emptyForm = {
 };
 
 function normalizeProduct(form, existingId) {
-  const categories = csvToArray(form.categoryCsv).map((v) => v.toLowerCase());
   const colors = csvToArray(form.colorsCsv);
   const images = csvToArray(form.imageCsv);
   const tags = csvToArray(form.tagsCsv);
@@ -41,7 +41,7 @@ function normalizeProduct(form, existingId) {
     weight: form.weight.trim() || 'N/A',
     purity: form.purity.trim() || 'N/A',
     badge: form.badge.trim() || null,
-    category: categories.length ? categories : ['rings'],
+    category: form.category ? [form.category] : ['rings'],
     colors: colors.length ? colors : ['Gold'],
     tags,
     images: safeImages,
@@ -75,7 +75,7 @@ function formFromProduct(product) {
     weight: product.weight || '',
     purity: product.purity || '',
     badge: product.badge || '',
-    categoryCsv: (product.category || []).join(', '),
+    category: product.category?.[0] || '',
     colorsCsv: (product.colors || []).join(', '),
     tagsCsv: (product.tags || []).join(', '),
     imageCsv: (product.images || []).join(', '),
@@ -97,13 +97,14 @@ export default function AdminProducts() {
   const isAddRoute = location.pathname === '/admin/products/add';
   const { products, addProduct, updateProduct, deleteProduct } = useProducts();
   const { showToast } = useToast();
+  const { categories: allCategories } = useCategories();
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
   const [page, setPage] = useState(1);
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState(emptyForm);
 
-  const categories = useMemo(() => {
+  const filterCategories = useMemo(() => {
     const fromProducts = new Set(products.flatMap((p) => p.category || []));
     return ['all', ...Array.from(fromProducts)];
   }, [products]);
@@ -149,38 +150,86 @@ export default function AdminProducts() {
     clearForm();
   };
 
+  const productForm = (
+    <>
+      <div style={grid2}>
+        <Input label="Product Name" value={form.name} onChange={(v) => setForm({ ...form, name: v })} required />
+        <Input label="Price" value={form.price} onChange={(v) => setForm({ ...form, price: v })} />
+        <Input label="Weight" value={form.weight} onChange={(v) => setForm({ ...form, weight: v })} />
+        <Input label="Purity" value={form.purity} onChange={(v) => setForm({ ...form, purity: v })} />
+        <Input label="Quality" value={form.qualityGrade} onChange={(v) => setForm({ ...form, qualityGrade: v })} />
+        <Input label="Badge" value={form.badge} onChange={(v) => setForm({ ...form, badge: v })} />
+        <label style={{ gridColumn: '1 / -1', display: 'grid', gap: '0.4rem' }}>
+          <span>Category</span>
+          <select 
+            value={form.category} 
+            onChange={(e) => {
+              setForm({ ...form, category: e.target.value });
+            }}
+            style={inputStyle}
+            required
+          >
+            <option value="" disabled>Select a category</option>
+            {allCategories.filter(c => c.id !== 'all').map(cat => (
+              <option key={cat.id} value={cat.id}>
+                {cat.label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <Input label="Colors (comma separated)" value={form.colorsCsv} onChange={(v) => setForm({ ...form, colorsCsv: v })} />
+        <Input label="Tags (comma separated)" value={form.tagsCsv} onChange={(v) => setForm({ ...form, tagsCsv: v })} />
+        <Input label="Image URLs (comma separated)" value={form.imageCsv} onChange={(v) => setForm({ ...form, imageCsv: v })} />
+      </div>
+      <TextArea label="Description" value={form.description} onChange={(v) => setForm({ ...form, description: v })} required />
+      <TextArea label="Product Details" value={form.fullDescription} onChange={(v) => setForm({ ...form, fullDescription: v })} />
+      <div style={grid3}>
+        <Input label="SKU" value={form.sku} onChange={(v) => setForm({ ...form, sku: v })} />
+        <Input label="Metal Stamp" value={form.metalStamp} onChange={(v) => setForm({ ...form, metalStamp: v })} />
+        <Input label="Gold Weight" value={form.goldWeight} onChange={(v) => setForm({ ...form, goldWeight: v })} />
+        <Input label="Diamond Carat" value={form.diamondCarat} onChange={(v) => setForm({ ...form, diamondCarat: v })} />
+        <Input label="Height" value={form.height} onChange={(v) => setForm({ ...form, height: v })} />
+        <Input label="Width" value={form.width} onChange={(v) => setForm({ ...form, width: v })} />
+      </div>
+    </>
+  );
+
+  if (isAddRoute) {
+    return (
+      <div>
+        <h2 style={{ marginBottom: '1rem', textAlign: 'center' }}>Add Product</h2>
+        <form onSubmit={submitForm} style={cardStyle}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
+            <h3 style={{ margin: 0 }}>Create New Product</h3>
+            <button type="button" className="btn-outline" onClick={() => navigate('/admin/products')}>
+              <span>Back</span>
+            </button>
+          </div>
+          {productForm}
+          <div style={{ display: 'flex', gap: '0.6rem', marginTop: '1rem' }}>
+            <button type="submit" className="btn-gold">
+              <span>Add Product</span>
+            </button>
+            <button type="button" className="btn-outline" onClick={() => setForm(emptyForm)}>
+              <span>Reset</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h2 style={{ marginBottom: '1rem', textAlign: 'center' }}>Products</h2>
 
-      {(isAddRoute || editingId) && (
-        <form onSubmit={submitForm} style={cardStyle}>
-          <h3 style={{ marginBottom: '0.8rem' }}>{editingId ? 'Update Product' : 'Add Product'}</h3>
-          <div style={grid2}>
-            <Input label="Product Name" value={form.name} onChange={(v) => setForm({ ...form, name: v })} required />
-            <Input label="Price" value={form.price} onChange={(v) => setForm({ ...form, price: v })} />
-            <Input label="Weight" value={form.weight} onChange={(v) => setForm({ ...form, weight: v })} />
-            <Input label="Purity" value={form.purity} onChange={(v) => setForm({ ...form, purity: v })} />
-            <Input label="Quality" value={form.qualityGrade} onChange={(v) => setForm({ ...form, qualityGrade: v })} />
-            <Input label="Badge" value={form.badge} onChange={(v) => setForm({ ...form, badge: v })} />
-            <Input label="Category (comma separated)" value={form.categoryCsv} onChange={(v) => setForm({ ...form, categoryCsv: v })} />
-            <Input label="Colors (comma separated)" value={form.colorsCsv} onChange={(v) => setForm({ ...form, colorsCsv: v })} />
-            <Input label="Tags (comma separated)" value={form.tagsCsv} onChange={(v) => setForm({ ...form, tagsCsv: v })} />
-            <Input label="Image URLs (comma separated)" value={form.imageCsv} onChange={(v) => setForm({ ...form, imageCsv: v })} />
-          </div>
-          <TextArea label="Description" value={form.description} onChange={(v) => setForm({ ...form, description: v })} required />
-          <TextArea label="Product Details" value={form.fullDescription} onChange={(v) => setForm({ ...form, fullDescription: v })} />
-          <div style={grid3}>
-            <Input label="SKU" value={form.sku} onChange={(v) => setForm({ ...form, sku: v })} />
-            <Input label="Metal Stamp" value={form.metalStamp} onChange={(v) => setForm({ ...form, metalStamp: v })} />
-            <Input label="Gold Weight" value={form.goldWeight} onChange={(v) => setForm({ ...form, goldWeight: v })} />
-            <Input label="Diamond Carat" value={form.diamondCarat} onChange={(v) => setForm({ ...form, diamondCarat: v })} />
-            <Input label="Height" value={form.height} onChange={(v) => setForm({ ...form, height: v })} />
-            <Input label="Width" value={form.width} onChange={(v) => setForm({ ...form, width: v })} />
-          </div>
+      {editingId && (
+        <form onSubmit={submitForm} style={{ ...cardStyle, marginBottom: '1rem' }}>
+          <h3 style={{ marginBottom: '0.8rem' }}>Update Product</h3>
+          {productForm}
           <div style={{ display: 'flex', gap: '0.6rem', marginTop: '1rem' }}>
             <button type="submit" className="btn-gold">
-              <span>{editingId ? 'Update Product' : 'Add Product'}</span>
+              <span>Update Product</span>
             </button>
             <button type="button" className="btn-outline" onClick={clearForm}>
               <span>Cancel</span>
@@ -189,17 +238,31 @@ export default function AdminProducts() {
         </form>
       )}
 
-      <div style={{ ...cardStyle, marginTop: '1rem' }}>
-        <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-          <input
-            placeholder="Search by name/category/tag"
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setPage(1);
-            }}
-            style={inputStyle}
-          />
+      <div style={cardStyle}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 200px auto',
+            gap: '1rem',
+            alignItems: 'center',
+            marginBottom: '1.5rem',
+            background: 'var(--bg-dark)',
+            padding: '1rem',
+            borderRadius: '8px',
+            border: '1px solid var(--border-subtle)'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+            <input
+              placeholder="Search products..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
+              style={{ ...inputStyle, paddingLeft: '1rem' }}
+            />
+          </div>
           <select
             value={category}
             onChange={(e) => {
@@ -208,12 +271,15 @@ export default function AdminProducts() {
             }}
             style={inputStyle}
           >
-            {categories.map((cat) => (
+            {filterCategories.map((cat) => (
               <option key={cat} value={cat}>
-                {cat}
+                {cat === 'all' ? 'All Categories' : cat.charAt(0).toUpperCase() + cat.slice(1)}
               </option>
             ))}
           </select>
+          <button type="button" className="btn-gold" onClick={() => navigate('/admin/products/add')} style={{ height: '42px', padding: '0 1.5rem' }}>
+            <span>+ Add Product</span>
+          </button>
         </div>
 
         <div style={{ overflowX: 'auto' }}>
@@ -237,7 +303,7 @@ export default function AdminProducts() {
                     <img src={p.images?.[0]} alt={p.name} style={{ width: '52px', height: '52px', objectFit: 'cover', borderRadius: '6px' }} />
                   </Td>
                   <Td>{p.name}</Td>
-                  <Td>{(p.category || []).join(', ')}</Td>
+                  <Td>{p.category?.[0] || '-'}</Td>
                   <Td>{p.price}</Td>
                   <Td>{p.qualityGrade || '-'}</Td>
                   <Td>
