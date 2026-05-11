@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCategories } from '../context/CategoryContext';
 
+const PAGE_SIZE = 8;
+
 export default function AdminCategories() {
   const { categories, addCategory, deleteCategory, updateCategory } = useCategories();
   const [label, setLabel] = useState('');
-  const [icon, setIcon] = useState('');
+  const [image, setImage] = useState('');
   const [search, setSearch] = useState('');
   const [editingId, setEditingId] = useState(null);
   const [editLabel, setEditLabel] = useState('');
-  const [editIcon, setEditIcon] = useState('');
+  const [editImage, setEditImage] = useState('');
+  const [page, setPage] = useState(1);
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -17,14 +20,25 @@ export default function AdminCategories() {
     const newCat = {
       id: label.toLowerCase().replace(/\s+/g, '-'),
       label: label.trim(),
-      icon: icon.trim() || '⭐',
+      image: image || '/assets/products/ring1.png',
     };
     try {
       addCategory(newCat);
       setLabel('');
-      setIcon('');
+      setImage('');
     } catch (err) {
       alert(err.message);
+    }
+  };
+
+  const handleFileChange = (e, setter) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setter(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -33,7 +47,7 @@ export default function AdminCategories() {
     if (!editLabel.trim()) return;
     updateCategory(editingId, {
       label: editLabel.trim(),
-      icon: editIcon.trim() || '⭐',
+      image: editImage || '/assets/products/ring1.png',
     });
     setEditingId(null);
   };
@@ -41,7 +55,7 @@ export default function AdminCategories() {
   const startEdit = (cat) => {
     setEditingId(cat.id);
     setEditLabel(cat.label);
-    setEditIcon(cat.icon);
+    setEditImage(cat.image || cat.icon || '');
   };
 
   const handleDelete = (id) => {
@@ -55,24 +69,37 @@ export default function AdminCategories() {
     c.id.toLowerCase().includes(search.toLowerCase())
   );
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
   return (
     <div className="admin-categories" style={{ padding: '1rem' }}>
       <h2 style={{ marginBottom: '1.5rem', textAlign: 'center' }}>Manage Categories</h2>
       
       <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: '10px', border: '1px solid var(--border-subtle)', marginBottom: '2rem' }}>
         <h3 style={{ marginBottom: '1rem' }}>Add New Category</h3>
-        <form onSubmit={handleAdd} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: '1rem', alignItems: 'end' }}>
-          <label style={{ display: 'grid', gap: '0.4rem' }}>
+        <form onSubmit={handleAdd} style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'flex-end' }}>
+          <label style={{ flex: '1 1 200px', display: 'grid', gap: '0.4rem' }}>
             <span>Label</span>
-            <input type="text" value={label} onChange={(e) => setLabel(e.target.value)} required style={{ padding: '0.65rem', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-dark)', color: '#fff' }} />
+            <input type="text" value={label} onChange={(e) => setLabel(e.target.value)} required style={{ padding: '0.65rem', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-dark)', color: 'var(--text-ivory)' }} />
           </label>
-          <label style={{ display: 'grid', gap: '0.4rem' }}>
-            <span>Icon (optional)</span>
-            <input type="text" value={icon} onChange={(e) => setIcon(e.target.value)} placeholder="e.g., 💍" style={{ padding: '0.65rem', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-dark)', color: '#fff' }} />
+          <label style={{ flex: '1 1 250px', display: 'grid', gap: '0.4rem' }}>
+            <span>Upload Image</span>
+            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={(e) => handleFileChange(e, setImage)} 
+                style={{ flex: 1, padding: '0.4rem', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-dark)', color: 'var(--text-ivory)' }} 
+              />
+              {image && <img src={image} style={{ width: '40px', height: '40px', borderRadius: '4px', objectFit: 'cover' }} alt="Preview" />}
+            </div>
           </label>
-          <button type="submit" className="btn-gold" style={{ height: '42px' }}>
-            <span>Add Category</span>
-          </button>
+          <div style={{ flex: '1 1 100%', display: 'flex', justifyContent: 'center', marginTop: '0.5rem' }}>
+            <button type="submit" className="btn-gold" style={{ height: '42px', padding: '0 3rem' }}>
+              <span>Add Category</span>
+            </button>
+          </div>
         </form>
       </div>
 
@@ -83,7 +110,10 @@ export default function AdminCategories() {
             type="text" 
             placeholder="Search categories..." 
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
             style={{ padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-dark)', color: '#fff', minWidth: '200px' }}
           />
         </div>
@@ -92,31 +122,33 @@ export default function AdminCategories() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
-                <Th>Icon</Th>
+                <Th>Image</Th>
                 <Th>Label</Th>
                 <Th>ID</Th>
                 <Th>Actions</Th>
               </tr>
             </thead>
             <tbody>
-              {filtered.map((cat) => (
+              {paged.map((cat) => (
                 <tr key={cat.id}>
                   {editingId === cat.id ? (
                     <td colSpan={4} style={{ padding: '1rem', borderBottom: '1px solid var(--border-subtle)' }}>
                       <form onSubmit={handleUpdate} style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
-                        <input 
-                          type="text" 
-                          value={editIcon} 
-                          onChange={(e) => setEditIcon(e.target.value)} 
-                          placeholder="Icon"
-                          style={{ width: '60px', padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border-subtle)', background: 'var(--bg-black)', color: '#fff' }}
-                        />
+                        <div style={{ display: 'grid', gap: '0.2rem' }}>
+                          <input 
+                            type="file" 
+                            accept="image/*" 
+                            onChange={(e) => handleFileChange(e, setEditImage)} 
+                            style={{ width: '150px', fontSize: '0.7rem' }}
+                          />
+                          {editImage && <img src={editImage} style={{ width: '30px', height: '30px', borderRadius: '3px' }} alt="Edit Preview" />}
+                        </div>
                         <input 
                           type="text" 
                           value={editLabel} 
                           onChange={(e) => setEditLabel(e.target.value)} 
                           required 
-                          style={{ flex: 1, padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border-subtle)', background: 'var(--bg-black)', color: '#fff' }}
+                          style={{ flex: 1, padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border-subtle)', background: 'var(--bg-black)', color: 'var(--text-ivory)' }}
                         />
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
                           <button type="submit" className="btn-gold" style={{ padding: '0.4rem 0.8rem', fontSize: '0.7rem' }}>
@@ -130,7 +162,9 @@ export default function AdminCategories() {
                     </td>
                   ) : (
                     <>
-                      <Td style={{ fontSize: '1.5rem' }}>{cat.icon || '⭐'}</Td>
+                      <Td>
+                        <img src={cat.image || cat.icon} alt={cat.label} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
+                      </Td>
                       <Td style={{ fontWeight: 600, color: 'var(--gold-primary)' }}>{cat.label}</Td>
                       <Td style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{cat.id}</Td>
                       <Td>
@@ -145,6 +179,33 @@ export default function AdminCategories() {
               ))}
             </tbody>
           </table>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1.5rem', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', flex: '1 1 auto', textAlign: 'center' }}>
+            Showing {paged.length} of {filtered.length}
+          </p>
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flex: '1 1 auto', justifyContent: 'center' }}>
+            <button 
+              type="button" 
+              className="btn-outline" 
+              disabled={page <= 1} 
+              onClick={() => setPage(p => p - 1)}
+              style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}
+            >
+              Prev
+            </button>
+            <span style={{ fontSize: '0.9rem', minWidth: '60px', textAlign: 'center' }}>{page} / {totalPages}</span>
+            <button 
+              type="button" 
+              className="btn-outline" 
+              disabled={page >= totalPages} 
+              onClick={() => setPage(p => p + 1)}
+              style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>

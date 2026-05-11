@@ -1,17 +1,17 @@
 // Product data with categories, multiple images, and details
 export const categories = [
-  { id: 'all', label: 'All', icon: '✦' },
-  { id: 'rings', label: 'Rings', icon: '💍' },
-  { id: 'necklaces', label: 'Necklaces', icon: '📿' },
-  { id: 'earrings', label: 'Earrings', icon: '✨' },
-  { id: 'bracelets', label: 'Bracelets', icon: '⛓' },
-  { id: 'bangles', label: 'Bangles', icon: '🔮' },
-  { id: 'pendants', label: 'Pendants', icon: '🌟' },
-  { id: 'chains', label: 'Chains', icon: '🔗' },
-  { id: 'sets', label: 'Bridal Sets', icon: '👑' },
-  { id: 'forher', label: 'For Her', icon: '🌸' },
-  { id: 'forhim', label: 'For Him', icon: '🦁' },
-  { id: 'diamond', label: 'Diamond', icon: '💎' },
+  { id: 'all', label: 'All', image: ring1 },
+  { id: 'rings', label: 'Rings', image: ring1 },
+  { id: 'necklaces', label: 'Necklaces', image: neckless1 },
+  { id: 'earrings', label: 'Earrings', image: earrings1 },
+  { id: 'bracelets', label: 'Bracelets', image: bracelet1 },
+  { id: 'bangles', label: 'Bangles', image: bangles1 },
+  { id: 'pendants', label: 'Pendants', image: pendants1 },
+  { id: 'chains', label: 'Chains', image: chain1 },
+  { id: 'sets', label: 'Bridal Sets', image: bridalAvif },
+  { id: 'forher', label: 'For Her', image: earrings2 },
+  { id: 'forhim', label: 'For Him', image: ring3 },
+  { id: 'diamond', label: 'Diamond', image: diamond1 },
 ];
 
 // Import user-provided jewelry assets

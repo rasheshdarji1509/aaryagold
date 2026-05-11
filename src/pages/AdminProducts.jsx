@@ -241,8 +241,8 @@ export default function AdminProducts() {
       <div style={cardStyle}>
         <div
           style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 200px auto',
+            display: 'flex',
+            flexWrap: 'wrap',
             gap: '1rem',
             alignItems: 'center',
             marginBottom: '1.5rem',
@@ -252,7 +252,7 @@ export default function AdminProducts() {
             border: '1px solid var(--border-subtle)'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+          <div style={{ flex: '1 1 300px', display: 'flex', alignItems: 'center', position: 'relative' }}>
             <input
               placeholder="Search products..."
               value={search}
@@ -269,7 +269,7 @@ export default function AdminProducts() {
               setCategory(e.target.value);
               setPage(1);
             }}
-            style={inputStyle}
+            style={{ ...inputStyle, flex: '1 1 200px' }}
           >
             {filterCategories.map((cat) => (
               <option key={cat} value={cat}>
@@ -277,7 +277,7 @@ export default function AdminProducts() {
               </option>
             ))}
           </select>
-          <button type="button" className="btn-gold" onClick={() => navigate('/admin/products/add')} style={{ height: '42px', padding: '0 1.5rem' }}>
+          <button type="button" className="btn-gold" onClick={() => navigate('/admin/products/add')} style={{ height: '42px', padding: '0 1.5rem', flex: '1 1 auto' }}>
             <span>+ Add Product</span>
           </button>
         </div>
@@ -329,18 +329,30 @@ export default function AdminProducts() {
           </table>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.9rem' }}>
-          <p style={{ color: 'var(--text-muted)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1.5rem', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', flex: '1 1 auto', textAlign: 'center' }}>
             Showing {paged.length} of {filtered.length}
           </p>
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <button type="button" className="btn-outline" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flex: '1 1 auto', justifyContent: 'center' }}>
+            <button 
+              type="button" 
+              className="btn-outline" 
+              disabled={page <= 1} 
+              onClick={() => setPage((p) => p - 1)}
+              style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}
+            >
               <span>Prev</span>
             </button>
-            <span style={{ alignSelf: 'center' }}>
+            <span style={{ fontSize: '0.9rem', minWidth: '60px', textAlign: 'center' }}>
               {page} / {totalPages}
             </span>
-            <button type="button" className="btn-outline" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
+            <button 
+              type="button" 
+              className="btn-outline" 
+              disabled={page >= totalPages} 
+              onClick={() => setPage((p) => p + 1)}
+              style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}
+            >
               <span>Next</span>
             </button>
           </div>
@@ -389,6 +401,6 @@ const inputStyle = {
   background: 'var(--bg-dark)',
   color: 'var(--text-ivory)',
 };
-const grid2 = { display: 'grid', gap: '0.7rem', gridTemplateColumns: 'repeat(2, minmax(160px, 1fr))' };
-const grid3 = { display: 'grid', gap: '0.7rem', marginTop: '0.7rem', gridTemplateColumns: 'repeat(3, minmax(120px, 1fr))' };
+const grid2 = { display: 'grid', gap: '0.7rem', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' };
+const grid3 = { display: 'grid', gap: '0.7rem', marginTop: '0.7rem', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' };
 
