@@ -3,12 +3,13 @@ import Hero from '../components/Hero';
 import CategorySection from '../components/CategorySection';
 import ProductCard from '../components/ProductCard';
 import Testimonial from '../components/Testimonial';
-import { products } from '../data/products';
 import { useNavigate } from 'react-router-dom';
+import { useProducts } from '../context/ProductContext';
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState('all');
   const navigate = useNavigate();
+  const { products } = useProducts();
 
   const featuredProducts = products
     .filter(p => activeCategory === 'all' || p.category.includes(activeCategory))
@@ -77,22 +78,6 @@ export default function Home() {
       </section>
 
       <Testimonial />
-
-      <section className="section-padding" style={{ background: 'var(--bg-black)' }}>
-        <div className="container">
-          <div className="section-header" style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <span className="section-label">Tailored For You</span>
-            <h2 className="section-title">Similar <span className="gold-text">Creations</span></h2>
-            <p style={{ color: 'var(--text-body)', marginTop: '1rem' }}>Hand-picked pieces based on current trends</p>
-          </div>
-
-          <div className="products-grid">
-            {products.slice(8, 12).map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      </section>
     </main>
   );
 }

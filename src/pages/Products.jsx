@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import CategorySection from '../components/CategorySection';
-import { products } from '../data/products';
 import { Search, SlidersHorizontal } from 'lucide-react';
+import { useProducts } from '../context/ProductContext';
 
 export default function Products() {
   const location = useLocation();
@@ -13,6 +13,7 @@ export default function Products() {
 
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [searchTerm, setSearchTerm] = useState(initialSearch);
+  const { products } = useProducts();
   const [filteredProducts, setFilteredProducts] = useState(products);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function Products() {
     }
 
     setFilteredProducts(result);
-  }, [activeCategory, searchTerm]);
+  }, [activeCategory, searchTerm, products]);
 
   return (
     <div className="products-page" style={{ paddingTop: '5rem' }}>

@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Search, Heart, Menu, X, Phone, Moon, Sun } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import { useTheme } from '../context/ThemeContext';
-import { products } from '../data/products';
+import { useProducts } from '../context/ProductContext';
 import logoLight from '../assets/aaya-logo.png';
 import logoGolden from '../assets/golden logo.png';
 import './Navbar.css';
@@ -24,6 +24,7 @@ export default function Navbar({ onSearch }) {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const { wishlist } = useWishlist();
+  const { products } = useProducts();
   const location = useLocation();
 
   useEffect(() => {

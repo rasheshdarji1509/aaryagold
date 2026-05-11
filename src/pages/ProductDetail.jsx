@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Heart, ShoppingBag, ArrowLeft, ShieldCheck, Truck, RotateCcw, Share2, Star } from 'lucide-react';
-import { products } from '../data/products';
 import { useWishlist } from '../context/WishlistContext';
+import { useProducts } from '../context/ProductContext';
 import './ProductDetail.css';
 
 export default function ProductDetail() {
   const { id } = useParams();
   const { toggleWishlist, isWishlisted } = useWishlist();
+  const { products } = useProducts();
   const [product, setProduct] = useState(null);
   const [activeImg, setActiveImg] = useState(0);
   const [selectedColor, setSelectedColor] = useState('');
@@ -29,10 +30,10 @@ export default function ProductDetail() {
       if (foundProduct.colorImages && foundProduct.colorImages[defaultColor]) {
         setCurrentImages(foundProduct.colorImages[defaultColor]);
       } else {
-        setCurrentImages(foundProduct.images);
+        setCurrentImages(foundProduct.images && foundProduct.images.length ? foundProduct.images : ['/assets/products/ring1.png']);
       }
     }
-  }, [id]);
+  }, [id, products]);
 
   const handleColorChange = (color) => {
     setSelectedColor(color);
@@ -80,7 +81,7 @@ Can you provide more details or pricing?`;
             <div className="main-image-container">
               {product.badge && <span className="detail-badge">{product.badge}</span>}
               <div className="current-color-tag">{selectedColor} Edition</div>
-              <img src={currentImages[activeImg]} alt={product.name} className="main-image" />
+              <img src={currentImages[activeImg] || product.images?.[0]} alt={product.name} className="main-image" />
               <button 
                 className={`detail-wishlist-btn ${isWishlisted(product.id) ? 'active' : ''}`}
                 onClick={() => toggleWishlist(product)}
@@ -106,7 +107,7 @@ Can you provide more details or pricing?`;
           <div className="product-main-info">
             <div className="info-header">
               <div className="category-tags">
-                {product.category.map(cat => (
+                {(product.category || []).map(cat => (
                   <span key={cat} className="detail-cat-tag">{cat}</span>
                 ))}
                 <span className="quality-badge">{product.qualityGrade}</span>
@@ -206,7 +207,7 @@ Can you provide more details or pricing?`;
                       </tr>
                       <tr>
                         <td>Category</td>
-                        <td>{product.category[0].toUpperCase()}</td>
+                        <td>{product.category?.[0] ? product.category[0].toUpperCase() : 'N/A'}</td>
                       </tr>
                       <tr>
                         <td>Gold Weight ( Approx ) <Share2 size={12} /></td>
@@ -281,7 +282,7 @@ Can you provide more details or pricing?`;
             <div className="product-tags-footer">
               <span className="footer-label">Tags:</span>
               <div className="footer-tags">
-                {product.tags.map(t => <span key={t}>#{t}</span>)}
+                {(product.tags || []).map(t => <span key={t}>#{t}</span>)}
               </div>
             </div>
           </div>

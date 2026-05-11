@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Heart, ShoppingBag, Eye } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Heart } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import './ProductCard.css';
 
 export default function ProductCard({ product }) {
   const [isHovered, setIsHovered] = useState(false);
   const { toggleWishlist, isWishlisted } = useWishlist();
+  const navigate = useNavigate();
 
   return (
     <Link 
@@ -45,15 +46,6 @@ export default function ProductCard({ product }) {
             />
           )}
         </div>
-
-        <div className="product-actions-overlay">
-          <button className="action-btn" title="Quick View">
-            <Eye size={18} />
-          </button>
-          <button className="action-btn" title="See Similar">
-            <ShoppingBag size={18} />
-          </button>
-        </div>
       </div>
 
       <div className="product-info">
@@ -68,7 +60,18 @@ export default function ProductCard({ product }) {
         
         <div className="product-footer">
           <span className="product-weight">{product.weight}</span>
-          <button className="similar-btn">Similar</button>
+          <div className="product-footer-actions">
+            <button
+              type="button"
+              className="detail-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(`/product/${product.id}`);
+              }}
+            >
+              Detail
+            </button>
+          </div>
         </div>
       </div>
     </Link>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail, Share2, ArrowUp } from 'lucide-react';
+import { MapPin, Phone, Mail, ArrowUp } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import './Footer.css';
 
@@ -10,6 +10,9 @@ import logoGolden from '../assets/golden logo.png';
 export default function Footer() {
   const { theme } = useTheme();
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  const mapsQuery = encodeURIComponent(
+    '1ST FLOOR, 23/25, Room No.1, Indrapuja, Shaikh Memon Street, Champa Gully, M.J.Market, Kalbadevi, Mumbai - 400002'
+  );
 
   return (
     <footer className="footer">
@@ -25,9 +28,6 @@ export default function Footer() {
               Premier gold jewellery wholesaler located in the heart of Kalbadevi, Mumbai.
               Renowned for quality, trust, and timeless craftsmanship since decades.
             </p>
-            <div className="social-links">
-              <a href="#" className="social-btn" title="Follow us"><Share2 size={18} /></a>
-            </div>
           </div>
 
           <div className="footer-links-group">
@@ -55,8 +55,27 @@ export default function Footer() {
           <div className="footer-contact">
             <h4 className="footer-title">Contact Info</h4>
             <div className="contact-item">
-              <MapPin size={32} className="gold-text" />
-              <p>1ST FLOOR, 23/25, Room No.1, Indrapuja, Shaikh Memon Street, Champa Gully, M.J.Market, Kalbadevi, Mumbai - 400002</p>
+              <MapPin size={44} className="gold-text footer-location-icon" />
+              <div className="footer-location">
+                <p>1ST FLOOR, 23/25, Room No.1, Indrapuja, Shaikh Memon Street, Champa Gully, M.J.Market, Kalbadevi, Mumbai - 400002</p>
+                <a
+                  className="footer-map-link"
+                  href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Find this location
+                </a>
+              </div>
+            </div>
+            <div className="footer-map-embed">
+              <iframe
+                title="Aarya Gold Location"
+                src={`https://www.google.com/maps?q=${mapsQuery}&output=embed`}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
             </div>
             <div className="contact-item">
               <Phone size={18} className="gold-text" />
