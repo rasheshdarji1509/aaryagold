@@ -75,7 +75,11 @@ export default function AdminLogin() {
 
         {error && <p style={{ color: '#ff6b6b', marginTop: '0.7rem' }}>{error}</p>}
 
-        <button type="submit" className="btn-gold" style={{ width: '100%', marginTop: '1rem' }}>
+        <button
+          type="submit"
+          className="btn-gold"
+          style={{ width: 'fit-content', minWidth: '160px', margin: '1rem auto 0', display: 'block' }}
+        >
           <span>Login</span>
         </button>
       </form>
