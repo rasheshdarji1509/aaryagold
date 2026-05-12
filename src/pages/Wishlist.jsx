@@ -24,7 +24,7 @@ export default function Wishlist() {
         {wishlist.length > 0 ? (
           <div className="products-grid" style={{ 
             display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fill, minmax(auto, 1fr))', 
+            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
             gap: '2.5rem',
             paddingBottom: '8rem'
           }}>

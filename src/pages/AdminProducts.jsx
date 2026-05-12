@@ -182,7 +182,7 @@ export default function AdminProducts() {
   const productForm = (
     <div style={{ display: 'grid', gap: '2rem' }}>
       {/* Row 1: Name and Price */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(auto, 1fr))', gap: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem' }}>
         <Input label="Product Name" value={form.name} onChange={(v) => setForm({ ...form, name: v })} required />
         <Input label="Price" value={form.price} onChange={(v) => setForm({ ...form, price: v })} />
       </div>
@@ -190,11 +190,11 @@ export default function AdminProducts() {
       <TextArea label="Product Description" value={form.description} onChange={(v) => setForm({ ...form, description: v })} required />
 
       {/* Row 3: Category, Colors, Tags in one row - Responsive stacking */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(auto, 1fr))', gap: '1.5rem', alignItems: 'flex-end' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', alignItems: 'flex-end' }}>
         <label style={{ display: 'grid', gap: '0.4rem' }}>
           <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#000000', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Category</span>
-          <select 
-            value={form.category} 
+          <select
+            value={form.category}
             onChange={(e) => setForm({ ...form, category: e.target.value })}
             style={inputStyle}
             required
@@ -232,7 +232,7 @@ export default function AdminProducts() {
       </div>
 
       {/* Row 5: Technical Overview - Responsive 4 Columns */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(auto, 1fr))', gap: '1.5rem', background: '#f8f8f8', padding: '1.5rem', borderRadius: '12px', border: '1px solid #ddd' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', background: '#f8f8f8', padding: '1.5rem', borderRadius: '12px', border: '1px solid #ddd' }}>
         <Input label="Weight" value={form.weight} onChange={(v) => setForm({ ...form, weight: v })} />
         <Input label="Purity" value={form.purity} onChange={(v) => setForm({ ...form, purity: v })} />
         <Input label="Quality Grade" value={form.qualityGrade} onChange={(v) => setForm({ ...form, qualityGrade: v })} />
@@ -240,7 +240,7 @@ export default function AdminProducts() {
       </div>
 
       {/* Row 6: Precise Details - Responsive Stacking */}
-      <div style={{ ...grid3, gridTemplateColumns: 'repeat(auto-fit, minmax(auto, 1fr))' }}>
+      <div style={{ ...grid3, gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }}>
         <Input label="SKU" value={form.sku} onChange={(v) => setForm({ ...form, sku: v })} />
         <Input label="Metal Stamp" value={form.metalStamp} onChange={(v) => setForm({ ...form, metalStamp: v })} />
         <Input label="Gold Weight" value={form.goldWeight} onChange={(v) => setForm({ ...form, goldWeight: v })} />
@@ -479,6 +479,6 @@ const inputStyle = {
   fontSize: '0.95rem',
   transition: 'border-color 0.2s',
 };
-const grid2 = { display: 'grid', gap: '1.5rem', gridTemplateColumns: 'repeat(auto-fit, minmax(auto, 1fr))' };
+const grid2 = { display: 'grid', gap: '1.5rem', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' };
 const grid3 = { display: 'grid', gap: '1.5rem', marginTop: '0.7rem' };
 
