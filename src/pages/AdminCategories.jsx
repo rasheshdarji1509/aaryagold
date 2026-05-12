@@ -74,28 +74,28 @@ export default function AdminCategories() {
 
   return (
     <div className="admin-categories" style={{ padding: '1rem' }}>
-      <h2 style={{ marginBottom: '1.5rem', textAlign: 'center' }}>Manage Categories</h2>
-
-      <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: '10px', border: '1px solid var(--border-subtle)', marginBottom: '2rem' }}>
-        <h3 style={{ marginBottom: '1rem' }}>Add New Category</h3>
+      <h2 style={{ marginBottom: '1.5rem', textAlign: 'center', fontFamily: 'var(--font-serif)', fontSize: '2rem' }}>Manage Categories</h2>
+      
+      <div style={{ background: '#ffffff', padding: '2rem', borderRadius: '12px', border: '1px solid #ddd', marginBottom: '2.5rem', boxShadow: '0 10px 30px rgba(0,0,0,0.08)' }}>
+        <h3 style={{ marginBottom: '1.5rem', fontFamily: 'var(--font-serif)', fontSize: '1.5rem', borderBottom: '1px solid #ddd', paddingBottom: '0.8rem', color: '#000' }}>Add New Category</h3>
         <form onSubmit={handleAdd} style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', alignItems: 'flex-end' }}>
           <label style={{ flex: '2 1 300px', display: 'grid', gap: '0.5rem' }}>
-            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--gold-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Category Label</span>
+            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#000000', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Category Label</span>
             <input 
               type="text" 
               value={label} 
               onChange={(e) => setLabel(e.target.value)} 
               required 
               placeholder="e.g. Diamond Rings"
-              style={{ padding: '0.8rem 1rem', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-dark)', color: 'var(--text-ivory)', transition: 'var(--transition)', width: '100%' }} 
+              style={{ padding: '0.8rem 1rem', borderRadius: '8px', border: '1px solid #ccc', background: '#fdfdfd', color: '#000', transition: 'var(--transition)', width: '100%' }} 
             />
           </label>
           
           <div style={{ flex: '1 1 250px', display: 'grid', gap: '0.5rem' }}>
-            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--gold-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Image</span>
+            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#000000', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Image</span>
             <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
-              <label style={{ flex: 1, height: '48px', borderRadius: '8px', border: '2px dashed var(--border-gold)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: 'var(--bg-dark)', transition: 'var(--transition)' }} onMouseEnter={(e) => e.target.style.background = 'rgba(201, 168, 76, 0.05)'} onMouseLeave={(e) => e.target.style.background = 'var(--bg-dark)'}>
-                <span style={{ fontSize: '0.75rem', color: 'var(--gold-primary)', fontWeight: 600 }}>{image ? 'Change' : 'Upload'}</span>
+              <label style={{ flex: 1, height: '48px', borderRadius: '8px', border: '2px dashed var(--gold-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: '#f8f8f8', transition: 'var(--transition)' }}>
+                <span style={{ fontSize: '0.75rem', color: '#000', fontWeight: 600 }}>{image ? 'Change' : 'Upload'}</span>
                 <input 
                   type="file" 
                   accept="image/*" 
@@ -104,7 +104,7 @@ export default function AdminCategories() {
                 />
               </label>
               {image && (
-                <div style={{ position: 'relative', width: '48px', height: '48px', borderRadius: '6px', overflow: 'hidden', border: '1px solid var(--border-gold)' }}>
+                <div style={{ position: 'relative', width: '48px', height: '48px', borderRadius: '6px', overflow: 'hidden', border: '1px solid #ddd' }}>
                   <img src={image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Preview" />
                   <button type="button" onClick={() => setImage('')} style={{ position: 'absolute', top: 0, right: 0, background: 'rgba(220, 53, 69, 0.8)', color: '#fff', border: 'none', width: '16px', height: '16px', fontSize: '9px', cursor: 'pointer' }}>&times;</button>
                 </div>

@@ -153,7 +153,7 @@ export default function AdminProducts() {
       ...prev,
       images: [...(prev.images || []), ...newImages]
     }));
-    
+
     // Clear the input so the same file can be selected again if needed
     e.target.value = '';
   };
@@ -180,61 +180,67 @@ export default function AdminProducts() {
   };
 
   const productForm = (
-    <>
-      <div style={grid2}>
+    <div style={{ display: 'grid', gap: '2rem' }}>
+      {/* Row 1: Name and Price */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
         <Input label="Product Name" value={form.name} onChange={(v) => setForm({ ...form, name: v })} required />
         <Input label="Price" value={form.price} onChange={(v) => setForm({ ...form, price: v })} />
-        <Input label="Weight" value={form.weight} onChange={(v) => setForm({ ...form, weight: v })} />
-        <Input label="Purity" value={form.purity} onChange={(v) => setForm({ ...form, purity: v })} />
-        <Input label="Quality" value={form.qualityGrade} onChange={(v) => setForm({ ...form, qualityGrade: v })} />
-        <Input label="Badge" value={form.badge} onChange={(v) => setForm({ ...form, badge: v })} />
-        <label style={{ gridColumn: '1 / -1', display: 'grid', gap: '0.4rem' }}>
-          <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--gold-primary)' }}>Category</span>
+      </div>
+
+      <TextArea label="Product Description" value={form.description} onChange={(v) => setForm({ ...form, description: v })} required />
+
+      {/* Row 3: Category, Colors, Tags in one row - Responsive stacking */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', alignItems: 'flex-end' }}>
+        <label style={{ display: 'grid', gap: '0.4rem' }}>
+          <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#000000', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Category</span>
           <select 
             value={form.category} 
-            onChange={(e) => {
-              setForm({ ...form, category: e.target.value });
-            }}
+            onChange={(e) => setForm({ ...form, category: e.target.value })}
             style={inputStyle}
             required
           >
             <option value="" disabled>Select a category</option>
             {allCategories.filter(c => c.id !== 'all').map(cat => (
-              <option key={cat.id} value={cat.id}>
-                {cat.label}
-              </option>
+              <option key={cat.id} value={cat.id}>{cat.label}</option>
             ))}
           </select>
         </label>
         <Input label="Colors (comma separated)" value={form.colorsCsv} onChange={(v) => setForm({ ...form, colorsCsv: v })} />
         <Input label="Tags (comma separated)" value={form.tagsCsv} onChange={(v) => setForm({ ...form, tagsCsv: v })} />
-        
-        <div style={{ gridColumn: '1 / -1', display: 'grid', gap: '0.8rem', marginTop: '0.5rem' }}>
-          <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--gold-primary)' }}>Product Images</span>
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-            {(form.images || []).map((img, idx) => (
-              <div key={idx} style={{ position: 'relative', width: '100px', height: '100px', borderRadius: '10px', overflow: 'hidden', border: '1px solid var(--border-gold)', boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
-                <img src={img} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                <button 
-                  type="button" 
-                  onClick={() => removeImage(idx)}
-                  style={{ position: 'absolute', top: '5px', right: '5px', background: 'rgba(220, 53, 69, 0.9)', color: '#fff', border: 'none', borderRadius: '50%', width: '24px', height: '24px', cursor: 'pointer', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'var(--transition)' }}
-                >
-                  &times;
-                </button>
-              </div>
-            ))}
-            <label style={{ width: '100px', height: '100px', borderRadius: '10px', border: '2px dashed var(--border-gold)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: 'var(--bg-dark)', transition: 'var(--transition)', gap: '4px' }} onMouseEnter={(e) => e.target.style.background = 'rgba(201, 168, 76, 0.05)'} onMouseLeave={(e) => e.target.style.background = 'var(--bg-dark)'}>
-              <span style={{ fontSize: '1.8rem', color: 'var(--gold-primary)', lineHeight: 1 }}>+</span>
-              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>Add Image</span>
-              <input type="file" multiple accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} />
-            </label>
-          </div>
+      </div>
+
+      {/* Row 4: Images */}
+      <div style={{ display: 'grid', gap: '0.8rem' }}>
+        <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#000000', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Product Images</span>
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          {(form.images || []).map((img, idx) => (
+            <div key={idx} style={{ position: 'relative', width: '100px', height: '100px', borderRadius: '10px', overflow: 'hidden', border: '1px solid var(--border-gold)', boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
+              <img src={img} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <button
+                type="button"
+                onClick={() => removeImage(idx)}
+                style={{ position: 'absolute', top: '5px', right: '5px', background: 'rgba(220, 53, 69, 0.9)', color: '#fff', border: 'none', borderRadius: '50%', width: '24px', height: '24px', cursor: 'pointer', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >&times;</button>
+            </div>
+          ))}
+          <label style={{ width: '100px', height: '100px', borderRadius: '10px', border: '2px dashed var(--border-gold)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: 'var(--bg-dark)', transition: 'var(--transition)', gap: '4px' }}>
+            <span style={{ fontSize: '1.8rem', color: 'var(--gold-primary)' }}>+</span>
+            <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 600 }}>Upload</span>
+            <input type="file" multiple accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} />
+          </label>
         </div>
       </div>
-      <TextArea label="Description" value={form.description} onChange={(v) => setForm({ ...form, description: v })} required />
-      <TextArea label="Product Details" value={form.fullDescription} onChange={(v) => setForm({ ...form, fullDescription: v })} />
-      <div style={grid3}>
+
+      {/* Row 5: Technical Overview - Responsive 4 Columns */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', background: '#f8f8f8', padding: '1.5rem', borderRadius: '12px', border: '1px solid #ddd' }}>
+        <Input label="Weight" value={form.weight} onChange={(v) => setForm({ ...form, weight: v })} />
+        <Input label="Purity" value={form.purity} onChange={(v) => setForm({ ...form, purity: v })} />
+        <Input label="Quality Grade" value={form.qualityGrade} onChange={(v) => setForm({ ...form, qualityGrade: v })} />
+        <Input label="Badge (e.g. New)" value={form.badge} onChange={(v) => setForm({ ...form, badge: v })} />
+      </div>
+
+      {/* Row 6: Precise Details - Responsive Stacking */}
+      <div style={{ ...grid3, gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }}>
         <Input label="SKU" value={form.sku} onChange={(v) => setForm({ ...form, sku: v })} />
         <Input label="Metal Stamp" value={form.metalStamp} onChange={(v) => setForm({ ...form, metalStamp: v })} />
         <Input label="Gold Weight" value={form.goldWeight} onChange={(v) => setForm({ ...form, goldWeight: v })} />
@@ -242,7 +248,10 @@ export default function AdminProducts() {
         <Input label="Height" value={form.height} onChange={(v) => setForm({ ...form, height: v })} />
         <Input label="Width" value={form.width} onChange={(v) => setForm({ ...form, width: v })} />
       </div>
-    </>
+
+      {/* Row 7: Full Technical Description */}
+      <TextArea label="Detailed Product Specifications" value={form.fullDescription} onChange={(v) => setForm({ ...form, fullDescription: v })} />
+    </div>
   );
 
   if (isAddRoute) {
@@ -250,18 +259,18 @@ export default function AdminProducts() {
       <div>
         <h2 style={{ marginBottom: '1rem', textAlign: 'center' }}>Add Product</h2>
         <form onSubmit={submitForm} style={{ ...cardStyle }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-gold)', paddingBottom: '0.8rem' }}>
-            <h3 style={{ margin: 0, fontFamily: 'var(--font-serif)', fontSize: '1.5rem' }}>Create New Product</h3>
-            <button type="button" className="btn-outline" onClick={() => navigate('/admin/products')} style={{ padding: '0.5rem 1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid #ddd', paddingBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
+            <h3 style={{ margin: 0, fontFamily: 'var(--font-serif)', fontSize: '1.5rem', color: '#000' }}>Create New Product</h3>
+            <button type="button" className="btn-outline" onClick={() => navigate('/admin/products')} style={{ padding: '0.5rem 1.5rem', height: '40px' }}>
               <span>Back</span>
             </button>
           </div>
           {productForm}
-          <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', justifyContent: 'center' }}>
-            <button type="submit" className="btn-gold" style={{ minWidth: '200px', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '3rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button type="submit" className="btn-gold" style={{ minWidth: '220px', justifyContent: 'center', height: '50px' }}>
               <span>Add Product</span>
             </button>
-            <button type="button" className="btn-outline" onClick={() => setForm(emptyForm)} style={{ minWidth: '150px', justifyContent: 'center' }}>
+            <button type="button" className="btn-outline" onClick={() => setForm(emptyForm)} style={{ minWidth: '150px', justifyContent: 'center', height: '50px' }}>
               <span>Reset</span>
             </button>
           </div>
@@ -276,18 +285,18 @@ export default function AdminProducts() {
 
       {editingId && (
         <form onSubmit={submitForm} style={{ ...cardStyle, marginBottom: '2rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-gold)', paddingBottom: '0.8rem' }}>
-            <h3 style={{ margin: 0, fontFamily: 'var(--font-serif)', fontSize: '1.5rem' }}>Update Product</h3>
-            <button type="button" className="btn-outline" onClick={clearForm} style={{ padding: '0.5rem 1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid #ddd', paddingBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
+            <h3 style={{ margin: 0, fontFamily: 'var(--font-serif)', fontSize: '1.5rem', color: '#000' }}>Update Product</h3>
+            <button type="button" className="btn-outline" onClick={clearForm} style={{ padding: '0.5rem 1.5rem', height: '40px' }}>
               <span>Cancel</span>
             </button>
           </div>
           {productForm}
-          <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', justifyContent: 'center' }}>
-            <button type="submit" className="btn-gold" style={{ minWidth: '200px', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '3rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button type="submit" className="btn-gold" style={{ minWidth: '220px', justifyContent: 'center', height: '50px' }}>
               <span>Update Product</span>
             </button>
-            <button type="button" className="btn-outline" onClick={clearForm} style={{ minWidth: '150px', justifyContent: 'center' }}>
+            <button type="button" className="btn-outline" onClick={clearForm} style={{ minWidth: '150px', justifyContent: 'center', height: '50px' }}>
               <span>Cancel</span>
             </button>
           </div>
@@ -400,10 +409,10 @@ export default function AdminProducts() {
             Showing {paged.length} of {filtered.length}
           </p>
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flex: '1 1 auto', justifyContent: 'center' }}>
-            <button 
-              type="button" 
-              className="btn-outline" 
-              disabled={page <= 1} 
+            <button
+              type="button"
+              className="btn-outline"
+              disabled={page <= 1}
               onClick={() => setPage((p) => p - 1)}
               style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}
             >
@@ -412,10 +421,10 @@ export default function AdminProducts() {
             <span style={{ fontSize: '0.9rem', minWidth: '60px', textAlign: 'center' }}>
               {page} / {totalPages}
             </span>
-            <button 
-              type="button" 
-              className="btn-outline" 
-              disabled={page >= totalPages} 
+            <button
+              type="button"
+              className="btn-outline"
+              disabled={page >= totalPages}
               onClick={() => setPage((p) => p + 1)}
               style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}
             >
@@ -431,7 +440,7 @@ export default function AdminProducts() {
 function Input({ label, value, onChange, required = false }) {
   return (
     <label style={{ display: 'grid', gap: '0.3rem' }}>
-      <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--gold-primary)' }}>{label}</span>
+      <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#000000', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</span>
       <input value={value} onChange={(e) => onChange(e.target.value)} style={inputStyle} required={required} />
     </label>
   );
@@ -440,7 +449,7 @@ function Input({ label, value, onChange, required = false }) {
 function TextArea({ label, value, onChange, required = false }) {
   return (
     <label style={{ display: 'grid', gap: '0.3rem', marginTop: '0.7rem' }}>
-      <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--gold-primary)' }}>{label}</span>
+      <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#000000', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</span>
       <textarea value={value} onChange={(e) => onChange(e.target.value)} rows={3} style={inputStyle} required={required} />
     </label>
   );
@@ -454,19 +463,22 @@ function Td({ children, className, style }) {
 }
 
 const cardStyle = {
-  border: '1px solid var(--border-subtle)',
-  borderRadius: '10px',
-  padding: '1rem',
-  background: 'var(--bg-card)',
+  border: '1px solid #ddd',
+  borderRadius: '12px',
+  padding: '2rem',
+  background: '#ffffff',
+  boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
 };
 const inputStyle = {
   width: '100%',
-  padding: '0.65rem 0.7rem',
+  padding: '0.8rem 1rem',
   borderRadius: '8px',
-  border: '1px solid var(--border-subtle)',
-  background: 'var(--bg-dark)',
-  color: 'var(--text-ivory)',
+  border: '1px solid #ccc',
+  background: '#fdfdfd',
+  color: '#000000',
+  fontSize: '0.95rem',
+  transition: 'border-color 0.2s',
 };
-const grid2 = { display: 'grid', gap: '0.7rem', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' };
-const grid3 = { display: 'grid', gap: '0.7rem', marginTop: '0.7rem', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' };
+const grid2 = { display: 'grid', gap: '1.5rem', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' };
+const grid3 = { display: 'grid', gap: '1.5rem', marginTop: '0.7rem' };
 
