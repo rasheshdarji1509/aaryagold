@@ -59,7 +59,7 @@
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(auto, 1fr));
   gap: 2.5rem;
 }
 
@@ -311,6 +311,12 @@ a {
 }
 
 /* Responsive Utilities */
+@media (max-width: 768px) {
+  .admin-upload-label {
+    width: 100% !important;
+  }
+}
+
 @media (max-width: 640px) {
   .hide-mobile {
     display: none !important;

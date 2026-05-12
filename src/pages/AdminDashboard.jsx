@@ -8,7 +8,7 @@ export default function AdminDashboard() {
   return (
     <div>
       <h2 style={{ marginBottom: '1rem' }}>Dashboard</h2>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(auto, 1fr))', gap: '1rem' }}>
         <StatCard title="Total Products" value={products.length} />
         <StatCard title="Total Categories" value={categoryCount} />
         <StatCard title="Last Product ID" value={products[0]?.id || 0} />

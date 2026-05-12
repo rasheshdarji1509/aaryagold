@@ -66,7 +66,7 @@ export default function About() {
             <h2 className="section-title">The <span className="gold-text">Pillars</span> of Aarya Gold</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '3rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(auto, 1fr))', gap: '3rem' }}>
             {[
               { icon: <Award size={32} />, title: 'Quality', text: 'We maintain the highest standards in every piece using only the finest materials.' },
               { icon: <ShieldCheck size={32} />, title: 'Trust', text: 'Building and maintaining trust with clients is at the core of our business.' },
@@ -97,7 +97,7 @@ export default function About() {
             <h2 className="section-title">The <span className="gold-text">Visionaries</span></h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(auto, 1fr))', gap: '3rem' }}>
             {[
               { name: 'Sagarbhai', role: 'Founder & CEO', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80' },
               { name: 'Priya Sharma', role: 'Design Director', img: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&q=80' },
