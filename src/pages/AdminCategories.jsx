@@ -64,8 +64,8 @@ export default function AdminCategories() {
     }
   };
 
-  const filtered = categories.filter(c => 
-    c.label.toLowerCase().includes(search.toLowerCase()) || 
+  const filtered = categories.filter(c =>
+    c.label.toLowerCase().includes(search.toLowerCase()) ||
     c.id.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -75,40 +75,55 @@ export default function AdminCategories() {
   return (
     <div className="admin-categories" style={{ padding: '1rem' }}>
       <h2 style={{ marginBottom: '1.5rem', textAlign: 'center' }}>Manage Categories</h2>
-      
+
       <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: '10px', border: '1px solid var(--border-subtle)', marginBottom: '2rem' }}>
         <h3 style={{ marginBottom: '1rem' }}>Add New Category</h3>
-        <form onSubmit={handleAdd} style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'flex-end' }}>
-          <label style={{ flex: '1 1 200px', display: 'grid', gap: '0.4rem' }}>
-            <span>Label</span>
-            <input type="text" value={label} onChange={(e) => setLabel(e.target.value)} required style={{ padding: '0.65rem', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-dark)', color: 'var(--text-ivory)' }} />
+        <form onSubmit={handleAdd} style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', alignItems: 'flex-end' }}>
+          <label style={{ flex: '2 1 300px', display: 'grid', gap: '0.5rem' }}>
+            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--gold-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Category Label</span>
+            <input 
+              type="text" 
+              value={label} 
+              onChange={(e) => setLabel(e.target.value)} 
+              required 
+              placeholder="e.g. Diamond Rings"
+              style={{ padding: '0.8rem 1rem', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-dark)', color: 'var(--text-ivory)', transition: 'var(--transition)', width: '100%' }} 
+            />
           </label>
-          <label style={{ flex: '1 1 250px', display: 'grid', gap: '0.4rem' }}>
-            <span>Upload Image</span>
-            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-              <input 
-                type="file" 
-                accept="image/*" 
-                onChange={(e) => handleFileChange(e, setImage)} 
-                style={{ flex: 1, padding: '0.4rem', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-dark)', color: 'var(--text-ivory)' }} 
-              />
-              {image && <img src={image} style={{ width: '40px', height: '40px', borderRadius: '4px', objectFit: 'cover' }} alt="Preview" />}
+          
+          <div style={{ flex: '1 1 250px', display: 'grid', gap: '0.5rem' }}>
+            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--gold-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Image</span>
+            <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
+              <label style={{ flex: 1, height: '48px', borderRadius: '8px', border: '2px dashed var(--border-gold)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: 'var(--bg-dark)', transition: 'var(--transition)' }} onMouseEnter={(e) => e.target.style.background = 'rgba(201, 168, 76, 0.05)'} onMouseLeave={(e) => e.target.style.background = 'var(--bg-dark)'}>
+                <span style={{ fontSize: '0.75rem', color: 'var(--gold-primary)', fontWeight: 600 }}>{image ? 'Change' : 'Upload'}</span>
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  onChange={(e) => handleFileChange(e, setImage)} 
+                  style={{ display: 'none' }} 
+                />
+              </label>
+              {image && (
+                <div style={{ position: 'relative', width: '48px', height: '48px', borderRadius: '6px', overflow: 'hidden', border: '1px solid var(--border-gold)' }}>
+                  <img src={image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Preview" />
+                  <button type="button" onClick={() => setImage('')} style={{ position: 'absolute', top: 0, right: 0, background: 'rgba(220, 53, 69, 0.8)', color: '#fff', border: 'none', width: '16px', height: '16px', fontSize: '9px', cursor: 'pointer' }}>&times;</button>
+                </div>
+              )}
             </div>
-          </label>
-          <div style={{ flex: '1 1 100%', display: 'flex', justifyContent: 'center', marginTop: '0.5rem' }}>
-            <button type="submit" className="btn-gold" style={{ height: '42px', padding: '0 3rem' }}>
-              <span>Add Category</span>
-            </button>
           </div>
+
+          <button type="submit" className="btn-gold" style={{ height: '48px', padding: '0 2rem', flex: '0 0 auto' }}>
+            <span>Add Category</span>
+          </button>
         </form>
       </div>
 
       <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: '10px', border: '1px solid var(--border-subtle)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
           <h3 style={{ margin: 0 }}>Existing Categories</h3>
-          <input 
-            type="text" 
-            placeholder="Search categories..." 
+          <input
+            type="text"
+            placeholder="Search categories..."
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -135,19 +150,19 @@ export default function AdminCategories() {
                     <td colSpan={4} style={{ padding: '1rem', borderBottom: '1px solid var(--border-subtle)' }}>
                       <form onSubmit={handleUpdate} style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
                         <div style={{ display: 'grid', gap: '0.2rem' }}>
-                          <input 
-                            type="file" 
-                            accept="image/*" 
-                            onChange={(e) => handleFileChange(e, setEditImage)} 
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleFileChange(e, setEditImage)}
                             style={{ width: '150px', fontSize: '0.7rem' }}
                           />
                           {editImage && <img src={editImage} style={{ width: '30px', height: '30px', borderRadius: '3px' }} alt="Edit Preview" />}
                         </div>
-                        <input 
-                          type="text" 
-                          value={editLabel} 
-                          onChange={(e) => setEditLabel(e.target.value)} 
-                          required 
+                        <input
+                          type="text"
+                          value={editLabel}
+                          onChange={(e) => setEditLabel(e.target.value)}
+                          required
                           style={{ flex: 1, padding: '0.5rem', borderRadius: '6px', border: '1px solid var(--border-subtle)', background: 'var(--bg-black)', color: 'var(--text-ivory)' }}
                         />
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -186,20 +201,20 @@ export default function AdminCategories() {
             Showing {paged.length} of {filtered.length}
           </p>
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flex: '1 1 auto', justifyContent: 'center' }}>
-            <button 
-              type="button" 
-              className="btn-outline" 
-              disabled={page <= 1} 
+            <button
+              type="button"
+              className="btn-outline"
+              disabled={page <= 1}
               onClick={() => setPage(p => p - 1)}
               style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}
             >
               Prev
             </button>
             <span style={{ fontSize: '0.9rem', minWidth: '60px', textAlign: 'center' }}>{page} / {totalPages}</span>
-            <button 
-              type="button" 
-              className="btn-outline" 
-              disabled={page >= totalPages} 
+            <button
+              type="button"
+              className="btn-outline"
+              disabled={page >= totalPages}
               onClick={() => setPage(p => p + 1)}
               style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }}
             >

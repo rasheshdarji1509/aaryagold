@@ -309,3 +309,10 @@ a {
     transform: translateX(-50%);
   }
 }
+
+/* Responsive Utilities */
+@media (max-width: 640px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}

@@ -15,7 +15,7 @@ const emptyForm = {
   category: '',
   colorsCsv: '',
   tagsCsv: '',
-  imageCsv: '',
+  images: [],
   description: '',
   fullDescription: '',
   qualityGrade: '',
@@ -29,7 +29,7 @@ const emptyForm = {
 
 function normalizeProduct(form, existingId) {
   const colors = csvToArray(form.colorsCsv);
-  const images = csvToArray(form.imageCsv);
+  const images = form.images || [];
   const tags = csvToArray(form.tagsCsv);
   const safeImages = images.length ? images : ['/assets/products/ring1.png'];
   const primaryColor = colors[0] || 'Gold';
@@ -78,7 +78,7 @@ function formFromProduct(product) {
     category: product.category?.[0] || '',
     colorsCsv: (product.colors || []).join(', '),
     tagsCsv: (product.tags || []).join(', '),
-    imageCsv: (product.images || []).join(', '),
+    images: product.images || [],
     description: product.description || '',
     fullDescription: product.fullDescription || '',
     qualityGrade: product.qualityGrade || '',
@@ -136,6 +136,35 @@ export default function AdminProducts() {
     if (isAddRoute) navigate('/admin/products');
   };
 
+  const handleImageUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    const filePromises = files.map(file => {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
+    });
+
+    const newImages = await Promise.all(filePromises);
+    setForm(prev => ({
+      ...prev,
+      images: [...(prev.images || []), ...newImages]
+    }));
+    
+    // Clear the input so the same file can be selected again if needed
+    e.target.value = '';
+  };
+
+  const removeImage = (index) => {
+    setForm(prev => ({
+      ...prev,
+      images: (prev.images || []).filter((_, i) => i !== index)
+    }));
+  };
+
   const submitForm = (e) => {
     e.preventDefault();
     const normalized = normalizeProduct(form, editingId);
@@ -160,7 +189,7 @@ export default function AdminProducts() {
         <Input label="Quality" value={form.qualityGrade} onChange={(v) => setForm({ ...form, qualityGrade: v })} />
         <Input label="Badge" value={form.badge} onChange={(v) => setForm({ ...form, badge: v })} />
         <label style={{ gridColumn: '1 / -1', display: 'grid', gap: '0.4rem' }}>
-          <span>Category</span>
+          <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--gold-primary)' }}>Category</span>
           <select 
             value={form.category} 
             onChange={(e) => {
@@ -179,7 +208,29 @@ export default function AdminProducts() {
         </label>
         <Input label="Colors (comma separated)" value={form.colorsCsv} onChange={(v) => setForm({ ...form, colorsCsv: v })} />
         <Input label="Tags (comma separated)" value={form.tagsCsv} onChange={(v) => setForm({ ...form, tagsCsv: v })} />
-        <Input label="Image URLs (comma separated)" value={form.imageCsv} onChange={(v) => setForm({ ...form, imageCsv: v })} />
+        
+        <div style={{ gridColumn: '1 / -1', display: 'grid', gap: '0.8rem', marginTop: '0.5rem' }}>
+          <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--gold-primary)' }}>Product Images</span>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            {(form.images || []).map((img, idx) => (
+              <div key={idx} style={{ position: 'relative', width: '100px', height: '100px', borderRadius: '10px', overflow: 'hidden', border: '1px solid var(--border-gold)', boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
+                <img src={img} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <button 
+                  type="button" 
+                  onClick={() => removeImage(idx)}
+                  style={{ position: 'absolute', top: '5px', right: '5px', background: 'rgba(220, 53, 69, 0.9)', color: '#fff', border: 'none', borderRadius: '50%', width: '24px', height: '24px', cursor: 'pointer', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'var(--transition)' }}
+                >
+                  &times;
+                </button>
+              </div>
+            ))}
+            <label style={{ width: '100px', height: '100px', borderRadius: '10px', border: '2px dashed var(--border-gold)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: 'var(--bg-dark)', transition: 'var(--transition)', gap: '4px' }} onMouseEnter={(e) => e.target.style.background = 'rgba(201, 168, 76, 0.05)'} onMouseLeave={(e) => e.target.style.background = 'var(--bg-dark)'}>
+              <span style={{ fontSize: '1.8rem', color: 'var(--gold-primary)', lineHeight: 1 }}>+</span>
+              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>Add Image</span>
+              <input type="file" multiple accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} />
+            </label>
+          </div>
+        </div>
       </div>
       <TextArea label="Description" value={form.description} onChange={(v) => setForm({ ...form, description: v })} required />
       <TextArea label="Product Details" value={form.fullDescription} onChange={(v) => setForm({ ...form, fullDescription: v })} />
@@ -198,19 +249,19 @@ export default function AdminProducts() {
     return (
       <div>
         <h2 style={{ marginBottom: '1rem', textAlign: 'center' }}>Add Product</h2>
-        <form onSubmit={submitForm} style={cardStyle}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
-            <h3 style={{ margin: 0 }}>Create New Product</h3>
-            <button type="button" className="btn-outline" onClick={() => navigate('/admin/products')}>
+        <form onSubmit={submitForm} style={{ ...cardStyle }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-gold)', paddingBottom: '0.8rem' }}>
+            <h3 style={{ margin: 0, fontFamily: 'var(--font-serif)', fontSize: '1.5rem' }}>Create New Product</h3>
+            <button type="button" className="btn-outline" onClick={() => navigate('/admin/products')} style={{ padding: '0.5rem 1rem' }}>
               <span>Back</span>
             </button>
           </div>
           {productForm}
-          <div style={{ display: 'flex', gap: '0.6rem', marginTop: '1rem' }}>
-            <button type="submit" className="btn-gold">
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', justifyContent: 'center' }}>
+            <button type="submit" className="btn-gold" style={{ minWidth: '200px', justifyContent: 'center' }}>
               <span>Add Product</span>
             </button>
-            <button type="button" className="btn-outline" onClick={() => setForm(emptyForm)}>
+            <button type="button" className="btn-outline" onClick={() => setForm(emptyForm)} style={{ minWidth: '150px', justifyContent: 'center' }}>
               <span>Reset</span>
             </button>
           </div>
@@ -224,14 +275,19 @@ export default function AdminProducts() {
       <h2 style={{ marginBottom: '1rem', textAlign: 'center' }}>Products</h2>
 
       {editingId && (
-        <form onSubmit={submitForm} style={{ ...cardStyle, marginBottom: '1rem' }}>
-          <h3 style={{ marginBottom: '0.8rem' }}>Update Product</h3>
+        <form onSubmit={submitForm} style={{ ...cardStyle, marginBottom: '2rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-gold)', paddingBottom: '0.8rem' }}>
+            <h3 style={{ margin: 0, fontFamily: 'var(--font-serif)', fontSize: '1.5rem' }}>Update Product</h3>
+            <button type="button" className="btn-outline" onClick={clearForm} style={{ padding: '0.5rem 1rem' }}>
+              <span>Cancel</span>
+            </button>
+          </div>
           {productForm}
-          <div style={{ display: 'flex', gap: '0.6rem', marginTop: '1rem' }}>
-            <button type="submit" className="btn-gold">
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', justifyContent: 'center' }}>
+            <button type="submit" className="btn-gold" style={{ minWidth: '200px', justifyContent: 'center' }}>
               <span>Update Product</span>
             </button>
-            <button type="button" className="btn-outline" onClick={clearForm}>
+            <button type="button" className="btn-outline" onClick={clearForm} style={{ minWidth: '150px', justifyContent: 'center' }}>
               <span>Cancel</span>
             </button>
           </div>
@@ -252,7 +308,7 @@ export default function AdminProducts() {
             border: '1px solid var(--border-subtle)'
           }}
         >
-          <div style={{ flex: '1 1 300px', display: 'flex', alignItems: 'center', position: 'relative' }}>
+          <div style={{ flex: '1 1 300px', display: 'flex', alignItems: 'center' }}>
             <input
               placeholder="Search products..."
               value={search}
@@ -269,7 +325,7 @@ export default function AdminProducts() {
               setCategory(e.target.value);
               setPage(1);
             }}
-            style={{ ...inputStyle, flex: '1 1 200px' }}
+            style={{ ...inputStyle, flex: '1 1 180px' }}
           >
             {filterCategories.map((cat) => (
               <option key={cat} value={cat}>
@@ -277,9 +333,11 @@ export default function AdminProducts() {
               </option>
             ))}
           </select>
-          <button type="button" className="btn-gold" onClick={() => navigate('/admin/products/add')} style={{ height: '42px', padding: '0 1.5rem', flex: '1 1 auto' }}>
-            <span>+ Add Product</span>
-          </button>
+          <div style={{ flex: '1 1 auto', display: 'flex', justifyContent: 'center' }}>
+            <button type="button" className="btn-gold" onClick={() => navigate('/admin/products/add')} style={{ height: '42px', padding: '0 2rem', width: '100%', maxWidth: '250px', justifyContent: 'center' }}>
+              <span>+ Add Product</span>
+            </button>
+          </div>
         </div>
 
         <div style={{ overflowX: 'auto' }}>
@@ -289,35 +347,43 @@ export default function AdminProducts() {
                 <Th>ID</Th>
                 <Th>Image</Th>
                 <Th>Name</Th>
-                <Th>Category</Th>
+                <Th className="hide-mobile">Category</Th>
                 <Th>Price</Th>
-                <Th>Quality</Th>
-                <Th>Actions</Th>
+                <Th className="hide-mobile">Quality</Th>
+                <Th style={{ textAlign: 'right' }}>Actions</Th>
               </tr>
             </thead>
             <tbody>
               {paged.map((p) => (
                 <tr key={p.id}>
-                  <Td>{p.id}</Td>
+                  <Td style={{ color: 'var(--gold-primary)', fontWeight: 600 }}>#{p.id}</Td>
                   <Td>
-                    <img src={p.images?.[0]} alt={p.name} style={{ width: '52px', height: '52px', objectFit: 'cover', borderRadius: '6px' }} />
+                    <img src={p.images?.[0]} alt={p.name} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border-subtle)' }} />
                   </Td>
-                  <Td>{p.name}</Td>
-                  <Td>{p.category?.[0] || '-'}</Td>
-                  <Td>{p.price}</Td>
-                  <Td>{p.qualityGrade || '-'}</Td>
-                  <Td>
-                    <div style={{ display: 'flex', gap: '0.4rem' }}>
-                      <button type="button" className="btn-outline" onClick={() => startEdit(p)}>
+                  <Td style={{ fontWeight: 500 }}>{p.name}</Td>
+                  <Td className="hide-mobile">{p.category?.[0] || '-'}</Td>
+                  <Td style={{ color: 'var(--gold-light)' }}>{p.price}</Td>
+                  <Td className="hide-mobile">
+                    <span style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem', borderRadius: '4px', background: 'rgba(201, 168, 76, 0.1)', color: 'var(--gold-primary)', border: '1px solid var(--border-gold)' }}>
+                      {p.qualityGrade || 'Standard'}
+                    </span>
+                  </Td>
+                  <Td style={{ textAlign: 'right' }}>
+                    <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                      <button type="button" className="btn-outline" onClick={() => startEdit(p)} style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem' }}>
                         <span>Edit</span>
                       </button>
                       <button
                         type="button"
                         onClick={() => {
-                          deleteProduct(p.id);
-                          showToast('Product deleted successfully');
+                          if (window.confirm('Delete this product?')) {
+                            deleteProduct(p.id);
+                            showToast('Product deleted successfully');
+                          }
                         }}
-                        style={{ padding: '0.45rem 0.7rem', background: '#5a2525', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
+                        style={{ padding: '0.4rem 0.8rem', background: 'rgba(220, 53, 69, 0.1)', color: '#ff4d4d', border: '1px solid rgba(220, 53, 69, 0.2)', borderRadius: '6px', cursor: 'pointer', fontSize: '0.75rem', transition: 'var(--transition)' }}
+                        onMouseEnter={(e) => e.target.style.background = 'rgba(220, 53, 69, 0.2)'}
+                        onMouseLeave={(e) => e.target.style.background = 'rgba(220, 53, 69, 0.1)'}
                       >
                         Delete
                       </button>
@@ -365,7 +431,7 @@ export default function AdminProducts() {
 function Input({ label, value, onChange, required = false }) {
   return (
     <label style={{ display: 'grid', gap: '0.3rem' }}>
-      <span>{label}</span>
+      <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--gold-primary)' }}>{label}</span>
       <input value={value} onChange={(e) => onChange(e.target.value)} style={inputStyle} required={required} />
     </label>
   );
@@ -374,17 +440,17 @@ function Input({ label, value, onChange, required = false }) {
 function TextArea({ label, value, onChange, required = false }) {
   return (
     <label style={{ display: 'grid', gap: '0.3rem', marginTop: '0.7rem' }}>
-      <span>{label}</span>
+      <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--gold-primary)' }}>{label}</span>
       <textarea value={value} onChange={(e) => onChange(e.target.value)} rows={3} style={inputStyle} required={required} />
     </label>
   );
 }
 
-function Th({ children }) {
-  return <th style={{ textAlign: 'left', borderBottom: '1px solid var(--border-subtle)', padding: '0.7rem' }}>{children}</th>;
+function Th({ children, className, style }) {
+  return <th className={className} style={{ textAlign: 'left', borderBottom: '1px solid var(--border-subtle)', padding: '1rem 0.7rem', color: 'var(--gold-primary)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', ...style }}>{children}</th>;
 }
-function Td({ children }) {
-  return <td style={{ borderBottom: '1px solid var(--border-subtle)', padding: '0.7rem' }}>{children}</td>;
+function Td({ children, className, style }) {
+  return <td className={className} style={{ borderBottom: '1px solid var(--border-subtle)', padding: '1rem 0.7rem', fontSize: '0.9rem', ...style }}>{children}</td>;
 }
 
 const cardStyle = {
