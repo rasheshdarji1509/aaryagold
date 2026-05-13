@@ -1,116 +1,203 @@
 import React from 'react';
-import { Award, ShieldCheck, Users, Zap } from 'lucide-react';
+import { Award, ShieldCheck, Zap, CheckCircle, MessageCircle, Phone, Camera, User, Mail } from 'lucide-react';
+import './About.css';
+
+// Team Images
+import sagarbhaiImg from '../assets/Sagarbhai.avif';
+import priyaImg from '../assets/Priya Sharma.avif';
+import rajeshImg from '../assets/rajesh patel.avif';
 
 export default function About() {
   return (
-    <div className="about-page" style={{ paddingTop: '5rem' }}>
-      {/* Hero Section */}
-      <section style={{ 
-        height: '400px', 
-        background: 'linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1400&q=80")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center'
-      }}>
-        <div className="container">
-          <span className="section-label" style={{ color: 'var(--gold-light)' }}>Since 2005</span>
-          <h1 className="section-title" style={{ fontSize: '4rem' }}>Our <span className="gold-text">Legacy</span></h1>
+    <div className="about-page">
+      {/* ... Hero and other sections unchanged ... */}
+      <section className="about-hero">
+        <div className="about-container">
+          <h1 className="animate-fade-down">About AARYA GOLD (CIYAZA) - MUMBAI</h1>
+          <p className="animate-fade-up">Learn about our journey, values, and commitment to excellence in the gold jewellery industry.</p>
         </div>
       </section>
 
-      {/* Story Section */}
-      <section style={{ padding: '8rem 2rem' }}>
-        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'center' }}>
-          <div>
-            <span className="section-label">Our Story</span>
-            <h2 className="section-title" style={{ marginBottom: '2rem', color: 'var(--text-heading)' }}>Crafting Excellence in <br/><span className="gold-text">Kalbadevi</span></h2>
-            <p style={{ color: 'var(--text-body)', fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '1.5rem' }}>
-              Founded with a vision to provide exceptional gold jewellery to retailers across India, Aarya Gold has established itself as a trusted name in the wholesale jewellery market of Mumbai.
-            </p>
-            <p style={{ color: 'var(--text-muted)', lineHeight: '1.8' }}>
-              Located in the historic Kalbadevi area, the heart of Mumbai's gold trade, we have built our reputation on the pillars of quality, trust, and craftsmanship. Our journey began with a simple mission: to create gold jewellery that combines traditional artistry with contemporary designs, meeting the diverse needs of our retail partners.
-            </p>
-          </div>
-          <div style={{ position: 'relative' }}>
-            <img 
-              src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&q=80" 
-              alt="Workshop" 
-              style={{ borderRadius: '4px', boxShadow: '20px 20px 0 var(--bg-card)' }}
-            />
-            <div style={{ 
-              position: 'absolute', 
-              bottom: '-2rem', 
-              right: '-2rem', 
-              background: 'var(--gold-primary)', 
-              color: 'var(--bg-black)', 
-              padding: '2rem', 
-              borderRadius: '2px',
-              fontFamily: 'var(--font-serif)',
-              textAlign: 'center'
-            }}>
-              <div style={{ fontSize: '2.5rem', fontWeight: '700' }}>20+</div>
-              <div style={{ fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Years of Expertise</div>
+      {/* Our Story Section */}
+      <section className="about-story">
+        <div className="about-container">
+          <div className="story-grid">
+            <div className="story-image-wrapper">
+              <img 
+                src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&q=80" 
+                alt="Exquisite Jewellery" 
+                className="story-image"
+              />
+              <div className="story-experience-badge">
+                <span className="years">30+</span>
+                <span className="text">Years of Excellence</span>
+              </div>
+            </div>
+            <div className="story-content">
+              <span className="section-label">Our Story</span>
+              <h2>A Legacy of Purity and Artistry</h2>
+              <p>
+                Founded with a vision to provide exceptional gold jewellery solutions across India, Aarya Gold has established itself as a trusted name in the wholesale jewellery market of Mumbai.
+              </p>
+              <p>
+                Located in the historic Kalbadevi area, the heart of Mumbai's gold trade, we have built our reputation on the pillars of purity, trust, and craftsmanship. Our journey began with a simple mission: to create gold jewellery that combines traditional artistry with contemporary designs, meeting the diverse needs of our retail partners.
+              </p>
+              <p>
+                Today, Aarya Gold stands as a symbol of excellence in the gold jewellery wholesale business, serving retail partners across the country with our extensive collection and personalized service.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Values Section */}
-      <section style={{ padding: '8rem 2rem', background: 'var(--bg-dark)' }}>
-        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
-            <span className="section-label">Core Values</span>
-            <h2 className="section-title">The <span className="gold-text">Pillars</span> of Aarya Gold</h2>
+      {/* Our Values Section */}
+      <section className="about-values">
+        <div className="about-container">
+          <div className="values-header">
+            <span className="section-label">Our Values</span>
+            <h2 className="section-title">The Foundation of Our Business</h2>
+            <p className="section-subtitle">
+              At Aarya Gold, our values guide everything we do, from sourcing materials to crafting jewellery and building relationships with our clients.
+            </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '3rem' }}>
+          <div className="values-grid">
+            <div className="value-card">
+              <div className="value-icon"><Award size={32} /></div>
+              <h3>Quality</h3>
+              <p>We are committed to maintaining the highest standards of quality in every piece of jewellery we create, using only the finest materials and craftsmanship.</p>
+            </div>
+            <div className="value-card">
+              <div className="value-icon"><ShieldCheck size={32} /></div>
+              <h3>Trust</h3>
+              <p>Building and maintaining trust with our clients is at the core of our business. We believe in transparency, integrity, and honest relationships.</p>
+            </div>
+            <div className="value-card">
+              <div className="value-icon"><Zap size={32} /></div>
+              <h3>Innovation</h3>
+              <p>While respecting traditional craftsmanship, we continuously innovate to meet the evolving tastes and preferences of the modern market.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Section */}
+      <section className="why-choose">
+        <div className="about-container">
+          <div className="values-header">
+            <span className="section-label">Why Us</span>
+            <h2 className="section-title">Why Choose Aarya Gold</h2>
+          </div>
+
+          <div className="why-grid">
             {[
-              { icon: <Award size={32} />, title: 'Quality', text: 'We maintain the highest standards in every piece using only the finest materials.' },
-              { icon: <ShieldCheck size={32} />, title: 'Trust', text: 'Building and maintaining trust with clients is at the core of our business.' },
-              { icon: <Zap size={32} />, title: 'Innovation', text: 'Continuously innovating to meet the evolving tastes of the modern market.' },
-              { icon: <Users size={32} />, title: 'Expertise', text: 'Decades of experience in the gold jewellery industry brings valuable insights.' },
-            ].map((val, idx) => (
-              <div key={idx} style={{ 
-                background: 'var(--bg-card)', 
-                padding: '3rem 2rem', 
-                borderRadius: '4px', 
-                border: '1px solid var(--border-subtle)',
-                textAlign: 'center'
-              }}>
-                <div style={{ color: 'var(--gold-primary)', marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>{val.icon}</div>
-                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--text-heading)' }}>{val.title}</h3>
-                <p style={{ color: 'var(--text-body)', fontSize: '0.9rem', lineHeight: '1.6' }}>{val.text}</p>
+              { 
+                title: 'Extensive Collection', 
+                desc: 'We offer a wide range of gold jewellery designs, from traditional to contemporary, catering to various market segments.' 
+              },
+              { 
+                title: 'Competitive Pricing', 
+                desc: 'Our wholesale pricing is competitive, helping our retail partners maintain healthy profit margins while offering quality products.' 
+              },
+              { 
+                title: 'Quality Assurance', 
+                desc: 'Every piece of jewellery undergoes rigorous quality checks to ensure it meets our high standards before reaching our clients.' 
+              },
+              { 
+                title: 'Personalized Service', 
+                desc: 'We understand that each client has unique needs, and we strive to provide personalized service and solutions.' 
+              },
+              { 
+                title: 'Timely Delivery', 
+                desc: 'We respect your business timelines and ensure prompt and secure delivery of your orders.' 
+              },
+              { 
+                title: 'Industry Expertise', 
+                desc: 'With decades of experience in the gold jewellery industry, we bring unparalleled skills and expertise to our partnerships.' 
+              }
+            ].map((item, idx) => (
+              <div key={idx} className="why-item">
+                <div className="why-icon-box">
+                  <CheckCircle size={24} />
+                </div>
+                <div className="why-text">
+                  <h4>{item.title}</h4>
+                  <p>{item.desc}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Team Section */}
-      <section style={{ padding: '8rem 2rem' }}>
-        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
-            <span className="section-label">Our Leaders</span>
-            <h2 className="section-title">The <span className="gold-text">Visionaries</span></h2>
+      {/* Our Team Section */}
+      <section className="about-team">
+        <div className="about-container">
+          <div className="values-header">
+            <span className="section-label">The Experts</span>
+            <h2 className="section-title">Meet Our Team</h2>
+            <p className="section-subtitle">
+              Meet the dedicated professionals behind Aarya Gold who work tirelessly to bring you the finest gold jewellery.
+            </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem' }}>
+          <div className="team-grid">
             {[
-              { name: 'Sagarbhai', role: 'Founder & CEO', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80' },
-              { name: 'Priya Sharma', role: 'Design Director', img: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&q=80' },
-              { name: 'Rajesh Patel', role: 'Operations Manager', img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80' },
+              { 
+                name: 'Sagarbhai', 
+                role: 'Founder & CEO', 
+                bio: 'With over 30 years of experience in the gold jewellery industry, Sagarbhai leads Aarya Gold with vision and expertise.',
+                img: sagarbhaiImg 
+              },
+              { 
+                name: 'Priya Sharma', 
+                role: 'Design Director', 
+                bio: 'Priya brings creativity and modern insight to our design process, ensuring our collections stay ahead of trends.',
+                img: priyaImg 
+              },
+              { 
+                name: 'Rajesh Patel', 
+                role: 'Operations Manager', 
+                bio: 'Rajesh ensures smooth operations and timely delivery, maintaining our reputation for reliability and efficiency.',
+                img: rajeshImg 
+              }
             ].map((member, idx) => (
-              <div key={idx} className="team-card" style={{ textAlign: 'center' }}>
-                <div style={{ position: 'relative', marginBottom: '1.5rem', overflow: 'hidden', borderRadius: '4px' }}>
-                  <img src={member.img} alt={member.name} style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover' }} />
+              <div key={idx} className="team-card">
+                <div className="team-image-box">
+                  <img src={member.img} alt={member.name} />
                 </div>
-                <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.5rem', marginBottom: '0.25rem', color: 'var(--text-heading)' }}>{member.name}</h4>
-                <p style={{ color: 'var(--gold-primary)', fontWeight: '600', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{member.role}</p>
+                <div className="team-info">
+                  <h4>{member.name}</h4>
+                  <span className="role">{member.role}</span>
+                  <p className="bio">{member.bio}</p>
+                  <div className="team-socials">
+                    <a href="#" className="team-social-btn"><Camera size={16} /></a>
+                    <a href="#" className="team-social-btn"><User size={16} /></a>
+                    <a href="#" className="team-social-btn"><Mail size={16} /></a>
+                  </div>
+                </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="about-cta">
+        <div className="about-container">
+          <div className="cta-content">
+            <h2>Join our network of satisfied retailers and discover the difference that quality gold jewellery can make for your business.</h2>
+            <div className="cta-buttons">
+              <button className="cta-btn cta-btn-primary">
+                Contact Us Today
+              </button>
+              <button className="cta-btn cta-btn-outline">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center' }}>
+                  <MessageCircle size={20} />
+                  WhatsApp Now
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </section>

@@ -100,15 +100,18 @@ function App() {
                   {/* Global styles for hidden/visible transition */}
                   <style>{`
                     .app-content {
-                      transition: opacity 0.8s ease;
+                      transition: opacity 1.2s cubic-bezier(0.65, 0, 0.35, 1), transform 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+                      will-change: opacity, transform;
                     }
                     .app-content.hidden {
                       opacity: 0;
+                      transform: scale(1.02);
                       height: 100vh;
                       overflow: hidden;
                     }
                     .app-content.visible {
                       opacity: 1;
+                      transform: scale(1);
                     }
                   `}</style>
                 </Router>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail, ArrowUp } from 'lucide-react';
+import { MapPin, Phone, Mail, Share2, Camera, User, ArrowUp } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import './Footer.css';
 
@@ -20,24 +20,26 @@ export default function Footer() {
         <div className="footer-container">
           <div className="footer-brand">
             <Link to="/" className="footer-logo">
-              <div className="logo-icon">
-                <img src={theme === 'dark' ? logoGolden : logoLight} alt="Aarya Gold" />
-              </div>
+              <img src={theme === 'dark' ? logoGolden : logoLight} alt="Aarya Gold" />
             </Link>
             <p className="footer-about">
-              Premier gold jewellery wholesaler located in the heart of Kalbadevi, Mumbai.
-              Renowned for quality, trust, and timeless craftsmanship since decades.
+              Aarya Gold (Ciyaza) - MUMBAI is a premier gold jewellery wholesaler located in the heart of Kalbadevi, Mumbai, offering high-quality gold ornaments for retailers across India.
             </p>
+            <div className="social-links">
+              <a href="#" className="social-btn"><Share2 size={18} /></a>
+              <a href="#" className="social-btn"><Camera size={18} /></a>
+              <a href="#" className="social-btn"><User size={18} /></a>
+            </div>
           </div>
 
           <div className="footer-links-group">
             <h4 className="footer-title">Quick Links</h4>
             <ul className="footer-links">
               <li><Link to="/">Home</Link></li>
-              <li><Link to="/products">Collection</Link></li>
               <li><Link to="/about">About Us</Link></li>
               <li><Link to="/contact">Contact</Link></li>
-              <li><Link to="/wishlist">Wishlist</Link></li>
+              <li><Link to="/terms">Terms & Conditions</Link></li>
+              <li><Link to="/privacy">Privacy Policy</Link></li>
             </ul>
           </div>
 
@@ -46,27 +48,17 @@ export default function Footer() {
             <ul className="footer-links">
               <li><Link to="/products?category=rings">Gold Rings</Link></li>
               <li><Link to="/products?category=necklaces">Necklaces</Link></li>
-              <li><Link to="/products?category=diamond">Diamond Sets</Link></li>
-              <li><Link to="/products?category=sets">Bridal Collection</Link></li>
               <li><Link to="/products?category=earrings">Earrings</Link></li>
+              <li><Link to="/products?category=bangles">Bangles</Link></li>
+              <li><Link to="/products?category=sets">Jewellery Sets</Link></li>
             </ul>
           </div>
 
           <div className="footer-contact">
             <h4 className="footer-title">Contact Info</h4>
             <div className="contact-item">
-              <MapPin size={44} className="gold-text footer-location-icon" />
-              <div className="footer-location">
-                <p>1ST FLOOR, 23/25, Room No.1, Indrapuja, Shaikh Memon Street, Champa Gully, M.J.Market, Kalbadevi, Mumbai - 400002</p>
-                <a
-                  className="footer-map-link"
-                  href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Find this location
-                </a>
-              </div>
+              <MapPin size={20} className="gold-text" />
+              <p>KALBADEVI, Mumbai, Maharashtra 400002</p>
             </div>
             <div className="footer-map-embed">
               <iframe
@@ -78,16 +70,15 @@ export default function Footer() {
               />
             </div>
             <div className="contact-item">
-              <Phone size={18} className="gold-text" />
-              <a href="tel:+918866600953" style={{ color: 'inherit', textDecoration: 'none' }}>
-                <p>+91 8866600953 (Sagarbhai)</p>
-              </a>
+              <Phone size={20} className="gold-text" />
+              <div>
+                <p>8866600953 (Sagarbhai)</p>
+                <p>7304421336</p>
+              </div>
             </div>
             <div className="contact-item">
-              <Mail size={18} className="gold-text" />
-              <a href="mailto:aaryagoldmumbai@gmail.com" style={{ color: 'inherit', textDecoration: 'none' }}>
-                <p>aaryagoldmumbai@gmail.com</p>
-              </a>
+              <Mail size={20} className="gold-text" />
+              <p>aaryagoldmumbai@gmail.com</p>
             </div>
           </div>
         </div>
@@ -96,10 +87,6 @@ export default function Footer() {
       <div className="footer-bottom">
         <div className="footer-bottom-container">
           <p>© 2025 Aarya Gold (Ciyaza) - MUMBAI. All rights reserved.</p>
-          <div className="footer-legal">
-            <Link to="/terms">Terms & Conditions</Link>
-            <Link to="/privacy">Privacy Policy</Link>
-          </div>
           <button className="back-to-top" onClick={scrollToTop}>
             <ArrowUp size={20} />
           </button>

@@ -1,139 +1,286 @@
 .loader-overlay {
   position: fixed;
   inset: 0;
-  background: var(--bg-black);
+  background: #0a0a0a;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
-  animation: loaderFadeOut 0.8s ease 2.8s forwards;
+  z-index: 99999;
+  overflow: hidden;
+  animation: loaderMainFadeOut 0.8s cubic-bezier(0.65, 0, 0.35, 1) 2.8s forwards;
 }
 
-@keyframes loaderFadeOut {
-  to { opacity: 0; pointer-events: none; }
+.loader-backdrop-glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(201, 168, 76, 0.08) 0%, transparent 70%);
+  animation: pulseGlow 4s ease-in-out infinite;
 }
 
 .loader-content {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 3.5rem;
+  z-index: 2;
 }
 
-/* Rings */
-.loader-rings {
+/* Visual Container */
+.loader-visual {
   position: relative;
-  width: 140px;
-  height: 140px;
+  width: 180px;
+  height: 180px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.loader-rings-container {
+  position: absolute;
+  inset: 0;
 }
 
 .ring {
   position: absolute;
-  border-radius: 50%;
-  border-style: solid;
-  border-color: transparent;
-}
-
-.ring-1 {
-  width: 140px; height: 140px;
-  border-top-color: #C9A84C;
-  border-width: 2px;
-  animation: spin 1.6s linear infinite;
-}
-.ring-2 {
-  width: 110px; height: 110px;
-  border-right-color: #E8D48B;
-  border-width: 1.5px;
-  animation: spin 1.2s linear infinite reverse;
-}
-.ring-3 {
-  width: 80px; height: 80px;
-  border-bottom-color: #9A7B2F;
-  border-width: 1px;
-  animation: spin 2s linear infinite;
-}
-
-/* Logo inside rings */
-.loader-logo {
-  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid transparent;
+}
+
+.ring-outer {
+  width: 180px;
+  height: 180px;
+  border-top-color: rgba(201, 168, 76, 0.4);
+  border-bottom-color: rgba(201, 168, 76, 0.1);
+  animation: spinLoader 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.ring-middle {
+  width: 150px;
+  height: 150px;
+  border-left-color: rgba(232, 212, 139, 0.5);
+  border-right-color: rgba(232, 212, 139, 0.1);
+  animation: spinLoader 2s cubic-bezier(0.4, 0, 0.2, 1) infinite reverse;
+}
+
+.ring-inner {
+  width: 120px;
+  height: 120px;
+  border-top-color: #C9A84C;
+  border-width: 2px;
+  animation: spinLoader 1.5s linear infinite;
+}
+
+.ring-accent {
+  width: 185px;
+  height: 185px;
+  border: 1px dashed rgba(201, 168, 76, 0.2);
+  animation: spinLoader 10s linear infinite;
+}
+
+/* Logo Section */
+.loader-logo-container {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.loader-brand-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px rgba(201, 168, 76, 0.4));
+  animation: logoPulse 2s ease-in-out infinite;
+}
+
+.logo-shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: skewX(-25deg);
+  animation: shimmerEffect 2s infinite;
+}
+
+/* Info Section */
+.loader-info {
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: float 3s ease-in-out infinite;
+  gap: 1.5rem;
+  text-align: center;
 }
 
-.loader-main-logo {
-  width: 70px;
-  height: 70px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 15px rgba(201, 168, 76, 0.6));
-  margin-bottom: 0.5rem;
+.loader-brand-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 300;
+  letter-spacing: 0.6em;
+  color: #C9A84C;
+  margin-right: -0.6em; /* Offset for letter spacing */
+  text-shadow: 0 0 10px rgba(201, 168, 76, 0.2);
+  animation: fadeInDown 0.8s ease-out;
 }
 
-.loader-brand {
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  color: var(--gold-primary);
-  text-transform: uppercase;
+.loader-progress-section {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
-.loader-subbrand {
-  font-family: var(--font-sans);
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.4em;
-  color: var(--gold-light);
-  opacity: 0.8;
-  text-transform: uppercase;
-}
-
-/* Progress */
-.loader-progress-bar {
-  width: 200px;
+.loader-progress-track {
+  width: 100%;
   height: 2px;
-  background: rgba(201, 168, 76, 0.15);
-  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.05);
+  position: relative;
+  border-radius: 4px;
   overflow: hidden;
 }
 
 .loader-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #9A7B2F, #C9A84C, #F5D878);
-  border-radius: 1px;
-  transition: width 0.12s ease;
-  box-shadow: 0 0 8px rgba(201, 168, 76, 0.5);
+  background: linear-gradient(90deg, #9A7B2F, #F5D878, #9A7B2F);
+  background-size: 200% 100%;
+  border-radius: 4px;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  animation: progressShimmer 2s linear infinite;
 }
 
-.loader-progress-text {
+.loader-progress-glow {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 100%;
+  background: #fff;
+  filter: blur(5px);
+  opacity: 0.5;
+}
+
+.loader-progress-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.loader-status {
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: 0.65rem;
   letter-spacing: 0.2em;
+  color: rgba(201, 168, 76, 0.6);
+  text-transform: uppercase;
+}
+
+.loader-percentage {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
   color: #C9A84C;
 }
 
-.loader-tagline {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.85rem;
-  font-style: italic;
-  color: rgba(201, 168, 76, 0.5);
-  letter-spacing: 0.05em;
+.loader-motto {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  margin-top: 0.5rem;
 }
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+/* Background Particles */
+.loader-particles .particle {
+  position: absolute;
+  background: #C9A84C;
+  border-radius: 50%;
+  opacity: 0;
 }
 
-@keyframes float {
-  0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
-  50% { transform: translate(-50%, -50%) translateY(-4px); }
+.p-1 { width: 2px; height: 2px; top: 20%; left: 15%; animation: particleFloat 4s infinite 0.5s; }
+.p-2 { width: 3px; height: 3px; top: 70%; left: 25%; animation: particleFloat 5s infinite 1.2s; }
+.p-3 { width: 1px; height: 1px; top: 40%; left: 80%; animation: particleFloat 3s infinite 0.8s; }
+.p-4 { width: 2px; height: 2px; top: 80%; left: 75%; animation: particleFloat 6s infinite 1.5s; }
+.p-5 { width: 1px; height: 1px; top: 10%; left: 60%; animation: particleFloat 4s infinite 2s; }
+.p-6 { width: 4px; height: 4px; top: 50%; left: 90%; animation: particleFloat 7s infinite 0.2s; }
+
+/* Animations */
+@keyframes spinLoader {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+@keyframes logoPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+}
+
+@keyframes shimmerEffect {
+  100% { left: 200%; }
+}
+
+@keyframes progressShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes particleFloat {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  50% { opacity: 0.4; }
+  100% { transform: translateY(-40px) scale(0); opacity: 0; }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes loaderMainFadeOut {
+  to { 
+    opacity: 0; 
+    visibility: hidden;
+    transform: scale(1.05);
+  }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .loader-brand-name {
+    font-size: 1.4rem;
+    letter-spacing: 0.4em;
+  }
+  
+  .loader-progress-section {
+    width: 220px;
+  }
+  
+  .loader-visual {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .ring-outer { width: 150px; height: 150px; }
+  .ring-middle { width: 125px; height: 125px; }
+  .ring-inner { width: 100px; height: 100px; }
+  .ring-accent { width: 155px; height: 155px; }
 }
