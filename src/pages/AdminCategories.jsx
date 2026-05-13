@@ -75,11 +75,11 @@ export default function AdminCategories() {
   const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
-    <div className="admin-categories" style={{ padding: '1rem' }}>
+    <div className="admin-container">
       <h2 style={{ marginBottom: '1.5rem', textAlign: 'center', fontFamily: 'var(--font-serif)', fontSize: '2rem' }}>Categories</h2>
 
       {/* Add New Category Form */}
-      <div style={{ background: '#ffffff', padding: '2rem', borderRadius: '12px', border: '1px solid #ddd', marginBottom: '2.5rem', boxShadow: '0 10px 30px rgba(0,0,0,0.08)' }}>
+      <div className="admin-card" style={{ marginBottom: '2.5rem' }}>
         <h3 style={{ marginBottom: '1.5rem', fontFamily: 'var(--font-serif)', fontSize: '1.5rem', borderBottom: '1px solid #ddd', paddingBottom: '0.8rem', color: '#000' }}>Add New Category</h3>
         <form onSubmit={handleAdd} style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', alignItems: 'flex-end' }}>
           <label style={{ flex: '2 1 300px', display: 'grid', gap: '0.5rem' }}>
@@ -122,7 +122,7 @@ export default function AdminCategories() {
       </div>
 
       {/* Categories Table */}
-      <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: '10px', border: '1px solid var(--border-subtle)' }}>
+      <div className="admin-card">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
           <h3 style={{ margin: 0 }}>Existing Categories</h3>
           <input

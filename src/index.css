@@ -310,10 +310,28 @@ a {
   }
 }
 
-/* Responsive Utilities */
+/* Admin Responsive Utilities */
+.admin-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+  border: 1px solid var(--border-subtle);
+  transition: var(--transition);
+}
+
+.admin-container {
+  padding: 2rem 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 @media (max-width: 768px) {
-  .admin-upload-label {
-    width: 100% !important;
+  .admin-card {
+    padding: 1.5rem 1rem;
+  }
+  .admin-container {
+    padding: 1rem 0.75rem;
   }
 }
 

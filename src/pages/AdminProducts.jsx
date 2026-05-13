@@ -243,9 +243,9 @@ export default function AdminProducts() {
 
   if (isAddRoute) {
     return (
-      <div style={{ padding: '1rem' }}>
+      <div className="admin-container">
         <h2 style={{ marginBottom: '1.5rem', textAlign: 'center', fontFamily: 'var(--font-serif)' }}>Add Product</h2>
-        <form onSubmit={submitForm} style={{ ...cardStyle, maxWidth: '900px', margin: '0 auto' }}>
+        <form onSubmit={submitForm} className="admin-card" style={{ maxWidth: '900px', margin: '0 auto' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2rem', borderBottom: '1px solid #eee', paddingBottom: '1rem' }}>
             <h3 style={{ margin: 0 }}>Product Details</h3>
             <button type="button" className="btn-outline" onClick={() => navigate('/admin/products')}>Back</button>
@@ -261,10 +261,10 @@ export default function AdminProducts() {
   }
 
   return (
-    <div style={{ padding: '1rem' }}>
+    <div className="admin-container">
       <h2 style={{ marginBottom: '1.5rem', fontSize: '2rem', textAlign: 'center', fontFamily: 'var(--font-serif)' }}>Products</h2>
 
-      <div style={cardStyle}>
+      <div className="admin-card">
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem', alignItems: 'center' }}>
           <input placeholder="Search Product..." value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} style={{ ...inputStyle, flex: 2 }} />
           <select value={category} onChange={(e) => { setCategory(e.target.value); setPage(1); }} style={{ ...inputStyle, flex: 1 }}>
