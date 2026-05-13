@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail, Share2, Camera, User, ArrowUp } from 'lucide-react';
+import { MapPin, Phone, Mail, ArrowUp } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import './Footer.css';
 
@@ -26,9 +26,7 @@ export default function Footer() {
               Aarya Gold (Ciyaza) - MUMBAI is a premier gold jewellery wholesaler located in the heart of Kalbadevi, Mumbai, offering high-quality gold ornaments for retailers across India.
             </p>
             <div className="social-links">
-              <a href="#" className="social-btn"><Share2 size={18} /></a>
-              <a href="#" className="social-btn"><Camera size={18} /></a>
-              <a href="#" className="social-btn"><User size={18} /></a>
+              {/* Social icons removed per request */}
             </div>
           </div>
 

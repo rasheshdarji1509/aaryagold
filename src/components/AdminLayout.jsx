@@ -38,7 +38,7 @@ export default function AdminLayout() {
       {isMobile && (
         <div style={{ padding: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-card)', borderBottom: '1px solid var(--border-subtle)' }}>
           <h3 style={{ margin: 0, color: 'var(--gold-primary)' }}>Admin Panel</h3>
-          <button 
+          <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             style={{ background: 'none', border: 'none', color: 'var(--gold-primary)', cursor: 'pointer' }}
           >
@@ -85,7 +85,7 @@ export default function AdminLayout() {
               Products
             </Link>
             <Link to="/admin/categories" onClick={() => setIsMenuOpen(false)} style={itemStyle('/admin/categories')}>
-              Categories (Manage)
+              Categories
             </Link>
           </nav>
           <button

@@ -1,5 +1,4 @@
-import React from 'react';
-import { Award, ShieldCheck, Zap, CheckCircle, MessageCircle, Phone, Camera, User, Mail } from 'lucide-react';
+import { Award, ShieldCheck, Zap, CheckCircle, MessageCircle, Phone, Camera, User, Mail, Layers, Tag, Users, Truck, Briefcase } from 'lucide-react';
 import './About.css';
 
 // Team Images
@@ -8,6 +7,39 @@ import priyaImg from '../assets/Priya Sharma.avif';
 import rajeshImg from '../assets/rajesh patel.avif';
 
 export default function About() {
+  const whyChoosePoints = [
+    { 
+      title: 'Extensive Collection', 
+      desc: 'We offer a wide range of gold jewellery designs, from traditional to contemporary, catering to various market segments.',
+      icon: <Layers size={24} />
+    },
+    { 
+      title: 'Competitive Pricing', 
+      desc: 'Our wholesale pricing is competitive, helping our retail partners maintain healthy profit margins while offering quality products.',
+      icon: <Tag size={24} />
+    },
+    { 
+      title: 'Quality Assurance', 
+      desc: 'Every piece of jewellery undergoes rigorous quality checks to ensure it meets our high standards before reaching our clients.',
+      icon: <ShieldCheck size={24} />
+    },
+    { 
+      title: 'Personalized Service', 
+      desc: 'We understand that each client has unique needs, and we strive to provide personalized service and solutions.',
+      icon: <Users size={24} />
+    },
+    { 
+      title: 'Timely Delivery', 
+      desc: 'We respect your business timelines and ensure prompt and secure delivery of your orders.',
+      icon: <Truck size={24} />
+    },
+    { 
+      title: 'Industry Expertise', 
+      desc: 'With decades of experience in the gold jewellery industry, we bring unparalleled skills and expertise to our partnerships.',
+      icon: <Briefcase size={24} />
+    }
+  ];
+
   return (
     <div className="about-page">
       {/* ... Hero and other sections unchanged ... */}
@@ -90,35 +122,10 @@ export default function About() {
           </div>
 
           <div className="why-grid">
-            {[
-              { 
-                title: 'Extensive Collection', 
-                desc: 'We offer a wide range of gold jewellery designs, from traditional to contemporary, catering to various market segments.' 
-              },
-              { 
-                title: 'Competitive Pricing', 
-                desc: 'Our wholesale pricing is competitive, helping our retail partners maintain healthy profit margins while offering quality products.' 
-              },
-              { 
-                title: 'Quality Assurance', 
-                desc: 'Every piece of jewellery undergoes rigorous quality checks to ensure it meets our high standards before reaching our clients.' 
-              },
-              { 
-                title: 'Personalized Service', 
-                desc: 'We understand that each client has unique needs, and we strive to provide personalized service and solutions.' 
-              },
-              { 
-                title: 'Timely Delivery', 
-                desc: 'We respect your business timelines and ensure prompt and secure delivery of your orders.' 
-              },
-              { 
-                title: 'Industry Expertise', 
-                desc: 'With decades of experience in the gold jewellery industry, we bring unparalleled skills and expertise to our partnerships.' 
-              }
-            ].map((item, idx) => (
+            {whyChoosePoints.map((item, idx) => (
               <div key={idx} className="why-item">
                 <div className="why-icon-box">
-                  <CheckCircle size={24} />
+                  {item.icon}
                 </div>
                 <div className="why-text">
                   <h4>{item.title}</h4>
