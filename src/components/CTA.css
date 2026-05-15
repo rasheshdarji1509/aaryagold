@@ -1,0 +1,113 @@
+.cta-section {
+  padding: 6rem 0;
+  position: relative;
+  background-color: var(--bg-black);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cta-background-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.08) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.cta-content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cta-text {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 400;
+  color: var(--text-heading);
+  line-height: 1.4;
+  margin-bottom: 3rem;
+  letter-spacing: 0.02em;
+}
+
+.cta-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Base button styles for CTA */
+.btn-cta-primary,
+.btn-cta-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-cta-primary {
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+  color: #000;
+  border: 1px solid transparent;
+}
+
+.btn-cta-primary:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(201, 168, 76, 0.3);
+  background: linear-gradient(135deg, var(--gold-shine), var(--gold-primary));
+}
+
+.btn-cta-whatsapp {
+  background: #25D366;
+  color: #fff;
+  border: 1px solid transparent;
+}
+
+.btn-cta-whatsapp:hover {
+  transform: translateY(-5px);
+  background: #128C7E;
+  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+}
+
+@media (max-width: 768px) {
+  .cta-section {
+    padding: 4rem 0;
+  }
+  
+  .cta-text {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .cta-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+  }
+  
+  .btn-cta-primary,
+  .btn-cta-whatsapp {
+    width: 100%;
+    justify-content: center;
+  }
+}

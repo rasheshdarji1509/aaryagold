@@ -4,6 +4,7 @@ import CategorySection from "../components/CategorySection";
 import ProductCard from "../components/ProductCard";
 import Testimonial from "../components/Testimonial";
 import Services from "../components/Services";
+import CTA from "../components/CTA";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useProducts } from "../context/ProductContext";
@@ -119,6 +120,8 @@ export default function Home() {
       <Services />
 
       <Testimonial />
+
+      <CTA />
     </main>
   );
 }
