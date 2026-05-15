@@ -3,6 +3,7 @@ import Hero from "../components/Hero";
 import CategorySection from "../components/CategorySection";
 import ProductCard from "../components/ProductCard";
 import Testimonial from "../components/Testimonial";
+import Services from "../components/Services";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useProducts } from "../context/ProductContext";
@@ -114,6 +115,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <Services />
 
       <Testimonial />
     </main>
