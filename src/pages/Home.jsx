@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import Hero from '../components/Hero';
-import CategorySection from '../components/CategorySection';
-import ProductCard from '../components/ProductCard';
-import Testimonial from '../components/Testimonial';
-import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useProducts } from '../context/ProductContext';
-import './Home.css';
+import React, { useState, useEffect } from "react";
+import Hero from "../components/Hero";
+import CategorySection from "../components/CategorySection";
+import ProductCard from "../components/ProductCard";
+import Testimonial from "../components/Testimonial";
+import { useNavigate } from "react-router-dom";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useProducts } from "../context/ProductContext";
+import "./Home.css";
 
 export default function Home() {
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeCategory, setActiveCategory] = useState("all");
   const navigate = useNavigate();
   const { products } = useProducts();
 
   const featuredProducts = products
-    .filter(p => activeCategory === 'all' || p.category.includes(activeCategory))
+    .filter(
+      (p) => activeCategory === "all" || p.category.includes(activeCategory),
+    )
     .slice(0, 8);
 
   const handleCategoryChange = (catId) => {
@@ -34,25 +36,31 @@ export default function Home() {
   useEffect(() => {
     const handleResize = () => {
       setItemsPerView(getItemsPerView());
+      setActiveIndex(0);
     };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const maxIndex = Math.ceil(featuredProducts.length / itemsPerView) - 1;
+  const maxIndex = Math.max(0, featuredProducts.length - itemsPerView);
 
   const nextSlide = () => {
-    setActiveIndex(prev => (prev >= maxIndex ? 0 : prev + 1));
+    setActiveIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
   };
 
   const prevSlide = () => {
-    setActiveIndex(prev => (prev <= 0 ? maxIndex : prev - 1));
+    setActiveIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
   };
 
   useEffect(() => {
     const timer = setInterval(nextSlide, 5000);
     return () => clearInterval(timer);
-  }, [maxIndex]);
+  }, [maxIndex, itemsPerView]);
+
+  const getTransform = () => {
+    if (itemsPerView === 1) return `translateX(-${activeIndex * 100}%)`;
+    return `translateX(calc(-${activeIndex} * (100% / ${itemsPerView} + ${2 / itemsPerView}rem)))`;
+  };
 
   return (
     <main>
@@ -66,18 +74,19 @@ export default function Home() {
       <section id="latest-creations" className="latest-creations-section">
         <div className="container">
           <div className="section-header-modern">
-            <div className="header-line"></div>
-            <h2 className="modern-title">LATEST <span className="gold-text">CREATIONS</span></h2>
-            <p className="modern-subtitle">Experience the pinnacle of craftsmanship with our newest arrivals.</p>
+            <h2 className="modern-title">
+              LATEST <span className="gold-text">CREATIONS</span>
+            </h2>
+            <div className="divider-gold"></div>
           </div>
 
           <div className="carousel-container">
             <div className="carousel-track-wrapper">
               <div
                 className="carousel-track"
-                style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+                style={{ transform: getTransform() }}
               >
-                {featuredProducts.map(product => (
+                {featuredProducts.map((product) => (
                   <div key={product.id} className="carousel-slide">
                     <ProductCard product={product} />
                   </div>
@@ -93,7 +102,7 @@ export default function Home() {
                 {Array.from({ length: maxIndex + 1 }).map((_, i) => (
                   <button
                     key={i}
-                    className={`c-dot ${i === activeIndex ? 'active' : ''}`}
+                    className={`c-dot ${i === activeIndex ? "active" : ""}`}
                     onClick={() => setActiveIndex(i)}
                   ></button>
                 ))}
@@ -103,12 +112,8 @@ export default function Home() {
               </button>
             </div>
           </div>
-
-
         </div>
       </section>
-
-
 
       <Testimonial />
     </main>

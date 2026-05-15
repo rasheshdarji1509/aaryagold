@@ -1,6 +1,6 @@
 .hero {
   position: relative;
-  height: calc(100vh - 80px);
+  height: calc(80vh - 80px);
   /* Fits perfectly with navbar (100px) */
   min-height: 500px;
   width: 100%;

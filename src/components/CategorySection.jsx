@@ -20,7 +20,7 @@ import diamondImg from '../assets/diamond.avif';
 
 export default function CategorySection({ activeCategory, onCategoryChange }) {
   const { categories: dynamicCategories } = useCategories();
-  
+
   // Combine "All" with dynamic categories
   const categoriesList = [
     { id: 'all', label: 'All', image: ringImg },
@@ -31,7 +31,6 @@ export default function CategorySection({ activeCategory, onCategoryChange }) {
     <section className="category-section">
       <div className="container">
         <div className="category-header">
-          <span className="section-label">LATEST COLLECTIONS</span>
           <h2 className="section-title">Shop By <span className="gold-text">Category</span></h2>
           <div className="divider-gold"></div>
         </div>
