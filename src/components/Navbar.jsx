@@ -1,29 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, Heart, Menu, X, Phone, Moon, Sun } from 'lucide-react';
-import { useWishlist } from '../context/WishlistContext';
-import { useTheme } from '../context/ThemeContext';
+import { Search, Menu, X } from 'lucide-react';
 import { useProducts } from '../context/ProductContext';
-import logoLight from '../assets/aaya-logo.png';
-import logoGolden from '../assets/golden logo.png';
+import Logo from './Logo';
 import './Navbar.css';
 
-const navLinks = [
-  { label: 'Home', to: '/' },
-  { label: 'Collection', to: '/products' },
-  { label: 'Wishlist', to: '/wishlist' },
-  { label: 'About', to: '/about' },
-  { label: 'Contact', to: '/contact' },
-];
+// SVG Icons for social media to avoid library issues
+const InstagramIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+);
+const FacebookIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+);
+const TwitterIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+);
 
 export default function Navbar({ onSearch }) {
-  const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const { wishlist } = useWishlist();
   const { products } = useProducts();
   const location = useLocation();
 
@@ -55,89 +53,78 @@ export default function Navbar({ onSearch }) {
 
   const navLinks = [
     { to: '/', label: 'Home' },
-    { to: '/products', label: 'Collection' },
-    { to: '/wishlist', label: 'Wishlist' },
     { to: '/about', label: 'About' },
-    { to: '/contact', label: 'Contact' },
+    { to: '/products', label: 'Product' },
+    { to: '/products', label: 'Category' },
+    { to: '/contact', label: 'Get In Touch' },
+  ];
+
+  const socialLinks = [
+    { icon: <InstagramIcon />, href: 'https://instagram.com/aaryagold', label: 'Instagram' },
+    { icon: <FacebookIcon />, href: 'https://facebook.com/aaryagold', label: 'Facebook' },
+    { icon: <TwitterIcon />, href: 'https://twitter.com/aaryagold', label: 'Twitter' },
   ];
 
   return (
     <>
-      {/* Top bar */}
-      <div className="navbar-topbar">
-        <a href="tel:+918866600953" style={{ color: 'inherit', textDecoration: 'none' }}>
-          <span>📞 8866600953 (Sagarbhai)</span>
-        </a>
-        <span className="topbar-divider">|</span>
-        <a href="mailto:aaryagoldmumbai@gmail.com" style={{ color: 'inherit', textDecoration: 'none' }}>
-          <span>✉️ aaryagoldmumbai@gmail.com</span>
-        </a>
-        <span className="topbar-divider">|</span>
-        <span>Mon–Sat: 12PM – 7PM</span>
-      </div>
-
       <nav className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
         <div className="navbar-inner">
-          {/* Logo */}
-          <Link to="/" className="navbar-logo">
-            <div className="logo-icon">
-              <img src={theme === 'dark' ? logoGolden : logoLight} alt="Aarya Gold" />
-            </div>
-          </Link>
-
-          {/* Desktop Nav Links */}
-          <ul className="navbar-links">
-            {navLinks.map(link => (
-              <li key={link.to}>
-                <Link
-                  to={link.to}
-                  className={`nav-link ${location.pathname === link.to ? 'active' : ''}`}
-                >
-                  {link.label}
-                  {link.to === '/wishlist' && wishlist.length > 0 && (
-                    <span className="nav-badge">{wishlist.length}</span>
-                  )}
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          {/* Right Icons */}
-          <div className="navbar-actions">
-            <button
-              className="nav-icon-btn theme-toggle"
-              onClick={toggleTheme}
-              title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
-            >
-              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-            </button>
-            <button
-              className="nav-icon-btn"
-              onClick={() => setSearchOpen(!searchOpen)}
-              title="Search"
-            >
-              <Search size={18} />
-            </button>
-            <Link to="/wishlist" className="nav-icon-btn wishlist-btn" title="Wishlist">
-              <Heart size={18} />
-              {wishlist.length > 0 && (
-                <span className="nav-badge">{wishlist.length}</span>
-              )}
+          {/* Left: Logo */}
+          <div className="navbar-left">
+            <Link to="/" className="navbar-logo-link">
+              <Logo variant="full" forceGolden={true} />
             </Link>
-            <a
-              href="https://wa.me/917304421336"
-              className="btn-whatsapp"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span>WhatsApp</span>
-            </a>
-            <button
-              className="nav-icon-btn menu-btn"
-              onClick={() => setMenuOpen(!menuOpen)}
-            >
-              {menuOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
+          </div>
+
+          {/* Middle: Desktop Nav Links */}
+          <div className="navbar-center">
+            <ul className="navbar-links">
+              {navLinks.map((link, idx) => (
+                <li key={`${link.to}-${idx}`}>
+                  <Link
+                    to={link.to}
+                    className={`nav-link ${location.pathname === link.to ? 'active' : ''}`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Right: Actions & Social */}
+          <div className="navbar-right">
+            <div className="navbar-actions">
+              <button
+                className="nav-icon-btn"
+                onClick={() => setSearchOpen(!searchOpen)}
+                title="Search"
+              >
+                <Search size={20} />
+              </button>
+
+              <div className="navbar-socials desktop-only">
+                {socialLinks.map((social, i) => (
+                  <a 
+                    key={i} 
+                    href={social.href} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="nav-social-icon"
+                    aria-label={social.label}
+                  >
+                    {social.icon}
+                  </a>
+                ))}
+              </div>
+
+              <button
+                className="nav-icon-btn menu-btn"
+                onClick={() => setMenuOpen(!menuOpen)}
+              >
+                {menuOpen ? <X size={22} /> : <Menu size={22} />}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -145,7 +132,7 @@ export default function Navbar({ onSearch }) {
         {searchOpen && (
           <div className="search-dropdown">
             <div className="search-input-wrap">
-              <Search size={16} className="search-icon" />
+              <Search size={18} className="search-icon" />
               <input
                 type="text"
                 placeholder="Search rings, necklaces, diamond…"
@@ -154,7 +141,7 @@ export default function Navbar({ onSearch }) {
                 autoFocus
               />
               {query && <button onClick={() => { setQuery(''); setSuggestions([]); }}>
-                <X size={14} />
+                <X size={16} />
               </button>}
             </div>
             {suggestions.length > 0 && (
@@ -180,18 +167,22 @@ export default function Navbar({ onSearch }) {
         {/* Mobile Menu */}
         {menuOpen && (
           <div className="mobile-menu">
-            {navLinks.map(link => (
+            {navLinks.map((link, idx) => (
               <Link
-                key={link.to}
+                key={`${link.to}-${idx}`}
                 to={link.to}
                 className={`mobile-link ${location.pathname === link.to ? 'active' : ''}`}
               >
                 {link.label}
               </Link>
             ))}
-            <a href="https://wa.me/917304421336" className="mobile-whatsapp" target="_blank" rel="noreferrer">
-              WhatsApp Us
-            </a>
+            <div className="mobile-socials">
+              {socialLinks.map((social, i) => (
+                <a key={i} href={social.href} target="_blank" rel="noreferrer" className="mobile-social-icon">
+                  {social.icon}
+                </a>
+              ))}
+            </div>
           </div>
         )}
       </nav>

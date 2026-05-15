@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Hero from '../components/Hero';
 import CategorySection from '../components/CategorySection';
 import ProductCard from '../components/ProductCard';
 import Testimonial from '../components/Testimonial';
 import { useNavigate } from 'react-router-dom';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useProducts } from '../context/ProductContext';
+import './Home.css';
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -16,66 +18,101 @@ export default function Home() {
     .slice(0, 8);
 
   const handleCategoryChange = (catId) => {
-    setActiveCategory(catId);
-    // Optional: scroll to products
-    const el = document.getElementById('featured-products');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    navigate(`/products?category=${catId}`);
   };
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const getItemsPerView = () => {
+    if (window.innerWidth > 1200) return 4;
+    if (window.innerWidth > 900) return 3;
+    if (window.innerWidth > 600) return 2;
+    return 1;
+  };
+
+  const [itemsPerView, setItemsPerView] = useState(getItemsPerView());
+
+  useEffect(() => {
+    const handleResize = () => {
+      setItemsPerView(getItemsPerView());
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const maxIndex = Math.ceil(featuredProducts.length / itemsPerView) - 1;
+
+  const nextSlide = () => {
+    setActiveIndex(prev => (prev >= maxIndex ? 0 : prev + 1));
+  };
+
+  const prevSlide = () => {
+    setActiveIndex(prev => (prev <= 0 ? maxIndex : prev - 1));
+  };
+
+  useEffect(() => {
+    const timer = setInterval(nextSlide, 5000);
+    return () => clearInterval(timer);
+  }, [maxIndex]);
 
   return (
     <main>
       <Hero />
-      
-      <CategorySection 
-        activeCategory={activeCategory} 
-        onCategoryChange={handleCategoryChange} 
+
+      <CategorySection
+        activeCategory={activeCategory}
+        onCategoryChange={handleCategoryChange}
       />
 
-      <section id="featured-products" className="section-padding" style={{ paddingTop: '2rem' }}>
-        <div className="container" style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <div className="section-header" style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <span className="section-label">Curated Collection</span>
-            <h2 className="section-title">Featured <span className="gold-text">Creations</span></h2>
-            <div className="divider-gold"></div>
+      <section id="latest-creations" className="latest-creations-section">
+        <div className="container">
+          <div className="section-header-modern">
+            <div className="header-line"></div>
+            <h2 className="modern-title">LATEST <span className="gold-text">CREATIONS</span></h2>
+            <p className="modern-subtitle">Experience the pinnacle of craftsmanship with our newest arrivals.</p>
           </div>
 
-          <div className="products-grid">
-            {featuredProducts.map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+          <div className="carousel-container">
+            <div className="carousel-track-wrapper">
+              <div
+                className="carousel-track"
+                style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+              >
+                {featuredProducts.map(product => (
+                  <div key={product.id} className="carousel-slide">
+                    <ProductCard product={product} />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="carousel-controls-modern">
+              <button className="carousel-btn prev" onClick={prevSlide}>
+                <ChevronLeft size={24} />
+              </button>
+              <div className="carousel-dots">
+                {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+                  <button
+                    key={i}
+                    className={`c-dot ${i === activeIndex ? 'active' : ''}`}
+                    onClick={() => setActiveIndex(i)}
+                  ></button>
+                ))}
+              </div>
+              <button className="carousel-btn next" onClick={nextSlide}>
+                <ChevronRight size={24} />
+              </button>
+            </div>
           </div>
 
-          <div style={{ textAlign: 'center', marginTop: '5rem' }}>
-            <button className="btn-outline" onClick={() => navigate('/products')}>
-              <span>View Full Collection</span>
+          <div className="view-all-wrapper">
+            <button className="btn-gold-outline" onClick={() => navigate('/products')}>
+              <span>VIEW FULL GALLERY</span>
             </button>
           </div>
         </div>
       </section>
 
-      {/* Decorative Promo Section */}
-      <section className="promo-section" style={{ 
-        padding: '10rem 2rem', 
-        background: 'linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1400&q=80")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-        textAlign: 'center'
-      }}>
-        <div className="container">
-          <span className="section-label" style={{ color: 'var(--gold-primary)' }}>Craftsmanship</span>
-          <h2 className="section-title" style={{ marginBottom: '2rem', fontSize: 'clamp(2.5rem, 5vw, 4rem)', color: '#FDFBF7' }}>
-            Exquisite Designs For <br/><span className="gold-text">Eternal Moments</span>
-          </h2>
-          <p style={{ color: 'rgba(255, 255, 255, 0.8)', maxWidth: '700px', margin: '0 auto 3rem', fontSize: '1.1rem' }}>
-            Every piece of jewellery at Aarya Gold tells a story of heritage and luxury. 
-            Hand-crafted by master artisans with decades of experience.
-          </p>
-          <button className="btn-gold" onClick={() => navigate('/contact')}>
-            <span>Book A Wholesale Consultation</span>
-          </button>
-        </div>
-      </section>
+
 
       <Testimonial />
     </main>

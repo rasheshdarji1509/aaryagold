@@ -1,0 +1,110 @@
+.brand-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.logo-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 50px;
+}
+
+.brand-icon {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.brand-logo-container:hover .brand-icon {
+  transform: scale(1.05) rotate(-5deg);
+}
+
+.logo-separator {
+  width: 2.5px;
+  height: 40px;
+  background: var(--gold-primary, #d4af37);
+  opacity: 0.8;
+  margin: 0 10px;
+}
+
+.brand-name-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.1;
+}
+
+.brand-name {
+  font-family: 'Cinzel', serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  background: linear-gradient(135deg, #d4af37 0%, #f1d592 50%, #d4af37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.brand-slogan {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--gold-primary, #d4af37);
+  font-weight: 500;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] .brand-name {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+}
+
+/* Text only variant for footer */
+.brand-logo-text-only {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-logo-text-only .brand-name {
+  font-size: 28px;
+  letter-spacing: 4px;
+}
+
+.brand-logo-text-only .brand-slogan {
+  font-size: 11px;
+  letter-spacing: 3px;
+}
+
+@media (max-width: 768px) {
+  .brand-name {
+    font-size: 20px;
+    letter-spacing: 2px;
+  }
+
+  .brand-logo-container {
+    gap: 0;
+  }
+
+  .brand-slogan {
+    font-size: 8px;
+    letter-spacing: 1.5px;
+  }
+
+  .logo-icon-wrapper {
+    height: 40px;
+    width: 40px;
+  }
+
+  .logo-separator {
+    height: 28px;
+  }
+}

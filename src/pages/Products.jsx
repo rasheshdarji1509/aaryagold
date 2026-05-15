@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import CategorySection from '../components/CategorySection';
 import { Search, SlidersHorizontal } from 'lucide-react';
@@ -8,8 +8,9 @@ import { useCategories } from '../context/CategoryContext';
 
 export default function Products() {
   const location = useLocation();
+  const { id: categoryId } = useParams();
   const queryParams = new URLSearchParams(location.search);
-  const initialCategory = queryParams.get('category') || 'all';
+  const initialCategory = categoryId || queryParams.get('category') || 'all';
   const initialSearch = queryParams.get('search') || '';
 
   const [activeCategory, setActiveCategory] = useState(initialCategory);
@@ -18,11 +19,28 @@ export default function Products() {
   const { categories } = useCategories();
   const [filteredProducts, setFilteredProducts] = useState(products);
 
+  // Sync state with URL when it changes
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const cat = categoryId || params.get('category') || 'all';
+    const search = params.get('search') || '';
+    setActiveCategory(cat);
+    setSearchTerm(search);
+  }, [location.search, categoryId]);
+
   useEffect(() => {
     let result = products;
 
     if (activeCategory !== 'all') {
-      result = result.filter(p => p.category.includes(activeCategory));
+      const activeCatLower = activeCategory.toLowerCase();
+      result = result.filter(p => 
+        (p.category || []).some(cat => {
+          const catLower = cat.toLowerCase();
+          return catLower === activeCatLower || 
+                 catLower.includes(activeCatLower) || 
+                 activeCatLower.includes(catLower);
+        })
+      );
     }
 
     if (searchTerm) {

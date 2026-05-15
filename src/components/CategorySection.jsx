@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useCategories } from '../context/CategoryContext';
 
 import './CategorySection.css';
@@ -30,24 +31,32 @@ export default function CategorySection({ activeCategory, onCategoryChange }) {
     <section className="category-section">
       <div className="container">
         <div className="category-header">
-          <span className="section-label">Browse By</span>
-          <h2 className="section-title">Exclusive <span className="gold-text">Categories</span></h2>
+          <span className="section-label">LATEST COLLECTIONS</span>
+          <h2 className="section-title">Shop By <span className="gold-text">Category</span></h2>
+          <div className="divider-gold"></div>
         </div>
 
         <div className="category-grid">
           {categoriesList.map((cat) => (
-            <button
+            <Link
               key={cat.id}
-              className={`category-item ${activeCategory === cat.id ? 'active' : ''}`}
-              onClick={() => onCategoryChange(cat.id)}
+              to={cat.id === 'all' ? '/products' : `/category/${cat.id}`}
+              className={`category-card ${activeCategory === cat.id ? 'active' : ''}`}
+              onClick={() => {
+                if (onCategoryChange) onCategoryChange(cat.id);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             >
-              <div className="category-img-box">
-                <div className="category-ring"></div>
-                <img src={cat.image || cat.img || cat.icon || ringImg} alt={cat.label} className="cat-img" />
-                <div className="cat-overlay"></div>
+              <div className="category-card-inner">
+                <img src={cat.image || cat.img || cat.icon || ringImg} alt={cat.label} className="category-card-img" />
+                <div className="category-card-overlay">
+                  <div className="category-card-content">
+                    <span className="category-card-title">{cat.label}</span>
+                    <span className="category-card-count">Explore Designs</span>
+                  </div>
+                </div>
               </div>
-              <span className="cat-label">{cat.label}</span>
-            </button>
+            </Link>
           ))}
         </div>
       </div>

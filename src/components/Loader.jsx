@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import logoGolden from '../assets/golden logo.png';
+import Logo from './Logo';
 import './Loader.css';
 
 export default function Loader() {
@@ -35,13 +35,12 @@ export default function Loader() {
           </div>
           
           <div className="loader-logo-container">
-            <img src={logoGolden} alt="Aarya Gold" className="loader-brand-logo" />
+            <Logo variant="full" forceGolden={true} className="loader-brand-logo" />
             <div className="logo-shimmer"></div>
           </div>
         </div>
 
         <div className="loader-info">
-          <div className="loader-brand-name">AARYA GOLD</div>
           <div className="loader-progress-section">
             <div className="loader-progress-track">
               <div 

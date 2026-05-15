@@ -148,25 +148,7 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* Scroll hint */}
-      <button className="scroll-hint" onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}>
-        <ChevronDown size={20} />
-      </button>
-
     </section>
-
-    {/* Marquee banner moved outside hero for natural flow */}
-    <div className="hero-marquee">
-      <div className="marquee-track">
-        {[...Array(2)].map((_, r) => (
-          <div key={r} className="marquee-inner">
-            {['22K Pure Gold', '✦', 'Diamond Collection', '✦', 'Bridal Sets', '✦', 'GST: 27ABRFA1094N1ZU', '✦', 'Kalbadevi Mumbai', '✦', 'Wholesale Pricing', '✦', '1000+ Happy Retailers', '✦'].map((t, i) => (
-              <span key={i}>{t}</span>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
   </>
   );
 }

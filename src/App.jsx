@@ -6,6 +6,7 @@ import Loader from './components/Loader';
 import AdminLayout from './components/AdminLayout';
 import Home from './pages/Home';
 import Products from './pages/Products';
+import CategoryPage from './pages/CategoryPage';
 import ProductDetail from './pages/ProductDetail';
 import Wishlist from './pages/Wishlist';
 import About from './pages/About';
@@ -46,6 +47,7 @@ function AppShell() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/category/:id" element={<CategoryPage />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/about" element={<About />} />
