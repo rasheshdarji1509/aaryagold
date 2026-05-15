@@ -55,7 +55,7 @@ export default function Navbar({ onSearch }) {
     { to: '/', label: 'Home' },
     { to: '/about', label: 'About' },
     { to: '/products', label: 'Product' },
-    { to: '/products', label: 'Category' },
+    { to: '/category', label: 'Category' },
     { to: '/contact', label: 'Get In Touch' },
   ];
 

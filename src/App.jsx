@@ -6,6 +6,7 @@ import Loader from './components/Loader';
 import AdminLayout from './components/AdminLayout';
 import Home from './pages/Home';
 import Products from './pages/Products';
+import AllCategories from './pages/AllCategories';
 import CategoryPage from './pages/CategoryPage';
 import ProductDetail from './pages/ProductDetail';
 import Wishlist from './pages/Wishlist';
@@ -19,8 +20,10 @@ import { CategoryProvider } from './context/CategoryContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { ProductProvider } from './context/ProductContext';
+import { HeroProvider } from './context/HeroContext';
 import { AdminAuthProvider, useAdminAuth } from './context/AdminAuthContext';
 import { ToastProvider } from './context/ToastContext';
+import AdminHeroSlides from './pages/AdminHeroSlides';
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -47,6 +50,7 @@ function AppShell() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/category" element={<AllCategories />} />
         <Route path="/category/:id" element={<CategoryPage />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/wishlist" element={<Wishlist />} />
@@ -66,6 +70,7 @@ function AppShell() {
           <Route path="products" element={<AdminProducts />} />
           <Route path="products/add" element={<AdminProducts />} />
           <Route path="categories" element={<AdminCategories />} />
+          <Route path="hero-slides" element={<AdminHeroSlides />} />
         </Route>
       </Routes>
       {!hidePublicLayout && <Footer />}

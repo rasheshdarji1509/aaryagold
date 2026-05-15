@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
-import CategorySection from '../components/CategorySection';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { useProducts } from '../context/ProductContext';
 import { useCategories } from '../context/CategoryContext';
@@ -138,11 +137,6 @@ export default function Products() {
             <span>Reset</span>
           </button>
         </div>
-
-        <CategorySection 
-          activeCategory={activeCategory} 
-          onCategoryChange={setActiveCategory} 
-        />
 
         <div className="products-grid" style={{ paddingBottom: '8rem' }}>
           {filteredProducts.length > 0 ? (

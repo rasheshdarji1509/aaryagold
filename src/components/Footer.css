@@ -81,8 +81,10 @@
 }
 
 .footer-links a {
-  color: var(--text-ivory, #e0e0e0);
-  font-size: 0.95rem;
+  color: #111111;
+  font-family: 'Inter', 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
   transition: var(--transition);
 }
 

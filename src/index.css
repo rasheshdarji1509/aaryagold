@@ -10,7 +10,7 @@
   --gold-shine: #F5D878;
   --rose-gold: #B76E79;
   --font-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
-  --font-sans: 'Montserrat', sans-serif;
+  --font-sans: 'Inter', 'Montserrat', sans-serif;
   --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 

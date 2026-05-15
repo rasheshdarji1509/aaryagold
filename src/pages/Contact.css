@@ -188,7 +188,6 @@
 .map-section {
   height: 500px;
   width: 100%;
-  filter: grayscale(1) invert(0.9) contrast(1.2);
 }
 
 /* Mobile Responsiveness */
@@ -240,40 +239,30 @@
 
 .social-icon-grid {
   display: flex;
-  gap: 1.2rem;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
-.social-icon-link {
-  width: 48px;
-  height: 48px;
+/* Header-matching style for contact social icons */
+.contact-social-btn {
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: var(--gold-primary);
+  background: rgba(201, 168, 76, 0.08);
+  border: 1px solid rgba(201, 168, 76, 0.25);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.social-icon-link:hover {
-  transform: translateY(-5px) scale(1.1);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-}
-
-/* Brand Colors */
-.social-icon-link.fb { background: #1877F2; }
-.social-icon-link.ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
-.social-icon-link.li { background: #0077b5; }
-.social-icon-link.wa { background: #25D366; }
-
-.social-icon-link:hover svg {
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+.contact-social-btn:hover {
+  background: var(--gold-primary);
+  color: #000;
+  border-color: var(--gold-primary);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(201, 168, 76, 0.25);
 }
 
 /* FAQ Section Styling */

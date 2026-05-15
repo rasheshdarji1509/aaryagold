@@ -6,7 +6,7 @@ import './Logo.css';
 
 export default function Logo({ variant = 'full', className = '', forceGolden = false }) {
   const { theme } = useTheme();
-  
+
   const logoSrc = (theme === 'dark' || forceGolden) ? logoGolden : logoLight;
 
   if (variant === 'text-only') {
@@ -25,7 +25,6 @@ export default function Logo({ variant = 'full', className = '', forceGolden = f
       <div className="logo-icon-wrapper">
         <img src={logoSrc} alt="Aarya Gold" className="brand-icon" />
       </div>
-      <div className="logo-separator"></div>
       <div className="brand-name-group">
         <span className="brand-name">AARYA</span>
         <span className="brand-slogan">AS GOOD AS GOLD</span>
