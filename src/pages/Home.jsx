@@ -104,11 +104,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="view-all-wrapper">
-            <button className="btn-gold-outline" onClick={() => navigate('/products')}>
-              <span>VIEW FULL GALLERY</span>
-            </button>
-          </div>
+
         </div>
       </section>
 
